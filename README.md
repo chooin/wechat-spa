@@ -6,10 +6,7 @@ let iframe = document.createElement('iframe')
 let body = document.querySelector('body')
 iframe.style.display = 'none'
 iframe.src = '/favicon.ico'
-new Promise((resolve, reject) => {
-  body.appendChild(iframe)
-}).then(() => {
-  iframe.remove()
-})
+body.appendChild(iframe)
+setTimeout(() => { iframe.remove() }, 300)
 </code>
 </pre>
