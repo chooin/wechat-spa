@@ -28,16 +28,16 @@ setTimeout(() => { iframe.remove(); }, 300)
 #### ES5
 <pre>
 <code>
-var iframe = document.createElement('iframe');
-var body = document.querySelector('body');
-iframe.style.display = 'none';
-iframe.src = '/favicon.ico';
+var iframe = document.createElement('iframe')
+var body = document.querySelector('body')
+iframe.style.display = 'none'
+iframe.src = '/favicon.ico'
 body.appendChild(iframe);
-setTimeout(function () { iframe.remove(); }, 300);
+setTimeout(function () { iframe.remove(); }, 300)
 </code>
 </pre>
 
-### 二、支付安全目录
+### 二、Oauth2授权登录
 1. hash统一用"#"，如：http://localhost:8080/#/home/index
 2. 微信菜单或者分享页面进入网站时做统一的授权页面，如访问 http://localhost:8080/#/home/index 页面，则先访问 http://localhost:8080/static/auth.html?redirect=http%3a%2f%2flocalhost%3a8080%2f%23%2fhome%2findex ，token等信息在auth.html页面处理完成后再跳转到要访问的页面
 
@@ -69,3 +69,6 @@ wx.config(function () {
 })
 </code>
 </pre>
+
+### 四、支付安全目录
+参考：[Oauth2授权登录](#Oauth2授权登录)的微信登录方案
