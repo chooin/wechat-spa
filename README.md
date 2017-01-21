@@ -80,4 +80,5 @@ wx.config(function () {
 
 ### 五、支付安全目录
 参考：[Oauth2授权登录](#Oauth2授权登录)的微信授权登录方案
+
 注：每次切换路由Android与iOS微信所获取到的安全路径不同
