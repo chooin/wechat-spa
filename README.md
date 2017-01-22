@@ -50,7 +50,7 @@ const _wechat = () => {
   const config = () => {
     return new Promise((resolve, reject) => {
       // 获取服务端微信配置信息
-      axios.$http(`${urls.api}/wechats/config`).then(res => {
+      axios.get(`${urls.api}/wechats/config`).then(res => {
         wx.config({
           debug: false,
           appId: res.appId,
