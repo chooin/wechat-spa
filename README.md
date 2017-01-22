@@ -1,6 +1,6 @@
 ## 单页面应用（SPA）在微信端的问题与解决方案
 
-- [安装和使用微信js-sdk](#安装和使用微信jsdk)
+- [安装和使用微信js-sdk](#安装和使用微信js-sdk)
 - [标题无法更新](#标题无法更新)
 - [Oauth2授权登录](#Oauth2授权登录)
 - [微信分享](#微信分享)
@@ -50,7 +50,7 @@ const _wechat = () => {
   const config = () => {
     return new Promise((resolve, reject) => {
       // 获取服务端微信配置信息
-      this.$http(`${urls.api}/wechats/config`).then(res => {
+      axios.$http(`${urls.api}/wechats/config`).then(res => {
         wx.config({
           debug: false,
           appId: res.appId,
