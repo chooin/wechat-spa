@@ -16,6 +16,7 @@ npm install weixin-js-sdk --save
 <pre>
 import wx from 'weixin-js-sdk'
 </pre>
+
 ### 二、标题无法更新
 在切换页面路由之后需在body里面添加iframe，随后移除掉iframe即可，代码如下
 #### ES6
