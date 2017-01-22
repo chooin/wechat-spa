@@ -80,6 +80,8 @@ _wechat.config(() => {
       ..
     })
   })
+}, (err) => {
+  console.warn(err)
 })
 </pre>
 
