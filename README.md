@@ -11,7 +11,6 @@
 <pre>
 npm install weixin-js-sdk --save
 </pre>
-
 2. ES6使用
 <pre>
 import wx from 'weixin-js-sdk'
@@ -21,21 +20,19 @@ import wx from 'weixin-js-sdk'
 在切换页面路由之后需在body里面添加iframe，随后移除掉iframe即可，代码如下
 #### ES6
 <pre>
-let iframe = document.createElement('iframe')
-let body = document.querySelector('body')
-iframe.style.display = 'none'
-iframe.src = '/favicon.ico'
-body.appendChild(iframe)
-setTimeout(() => { iframe.remove(); }, 300)
-</pre>
-#### ES5
-<pre>
-var iframe = document.createElement('iframe')
-var body = document.querySelector('body')
-iframe.style.display = 'none'
-iframe.src = '/favicon.ico'
-body.appendChild(iframe);
-setTimeout(function () { iframe.remove(); }, 300)
+// iPhone，iPod，iPad下无法更新标题
+if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
+  let iframe = document.createElement('iframe')
+  let body = document.querySelector('body')
+  iframe.style.display = 'none'
+  iframe.src = '/favicon.ico'
+  iframe.onload = () => {
+    setTimeout(() => {
+      iframe.remove()
+    }, 9)
+  }
+  body.appendChild(iframe)
+}
 </pre>
 
 ## Oauth2授权登录
