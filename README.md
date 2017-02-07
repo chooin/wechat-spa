@@ -39,6 +39,8 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 1. hash统一用"#"，如：http://localhost:8080/#/home/index
 2. 微信菜单或者分享页面进入网站时做统一的授权页面，如访问 http://localhost:8080/#/home/index 页面，则先访问 http://localhost:8080/static/auth.html?redirect=http%3a%2f%2flocalhost%3a8080%2f%23%2fhome%2findex ，token等信息在auth.html页面处理完成后再跳转到要访问的页面
 
+注：授权文件参考 https://github.com/Chooin/wechat-spa/blob/master/auth.html
+
 ## 微信分享
 每次切换路由的时候都重新配置微信js-sdk，代码如下
 #### ES6

@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+  <script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+  <script>
+  var WX = {
+    config: {
+      appid: 'wx8de3b9a5bbf2ccdf', // 微信appid
+      tokenName: 'token' // 需要设置的token名称
+    },
+    getParam: function (key) { // 获取url参数
+      var url = window.location.href;
+      var get = url.indexOf(key + '=');
+      if (get === -1) return false;
+      var paramVal = url.slice(key.length + get + 1);
+      var nextParam = paramVal.indexOf('&');
+      if (nextParam !== -1) paramVal = paramVal.slice(0, nextParam);
+      return decodeURIComponent(paramVal);
+    },
+    redirect: function () {
+      if (window.localStorage.getItem(WX.config.tokenName)) { // token存在，跳转到实际需要登录的页面
+        window.location.href = WX.getParam('redirect_uri') || '/';
+      } else { // token不存在，获取token
+        var code = WX.getParam('code');
+        if (code) { // code存在，去服务端交换token
+          $.ajax({
+            url: '/wechat/token',
+            type: 'POST',
+            data: {
+              code: code
+            },
+            dataType: 'json',
+            success: function (res) {
+              window.localStorage.setItem(WX.config.tokenName, res.data);
+              window.location.href = WX.getParam('redirect_uri') || '/';
+            },
+            error: function () {
+              alert('授权登录失败');
+            }
+          });
+        } else { // code不存在，跳转到获取code页面
+          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' + 
+                                 '?appid=' + WX.config.appid + 
+                                 '&redirect_uri=' + encodeURIComponent(window.location.href) + 
+                                 '&response_type=code' + 
+                                 '&scope=snsapi_base' + 
+                                 '&state=' + 
+                                 '#wechat_redirect';
+        }
+      }
+    }
+  }
+  WX.redirect();
+  </script>
+</head>
+</html>
