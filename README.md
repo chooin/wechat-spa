@@ -1,13 +1,13 @@
-# 单页面应用（SPA）在微信端的问题与解决方案
+# 微信端单页面应用（SPA）常见问题汇总及解决方案
 
 - [安装和使用微信js-sdk](#安装和使用微信js-sdk)
 - [标题无法更新](#标题无法更新)
-- [Oauth2授权登录](#Oauth2授权登录)
+- [授权登录](#授权登录)
 - [微信分享](#微信分享)
 - [支付安全目录](#支付安全目录)
 
 ## 安装和使用微信js-sdk
-1. npm安装微信js-sdk
+1. npm安装
 <pre>
 npm install weixin-js-sdk --save
 </pre>
@@ -29,17 +29,18 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
   iframe.onload = () => {
     setTimeout(() => {
       iframe.remove()
-    }, 9)
+    }, 10)
   }
   body.appendChild(iframe)
 }
 </pre>
 
-## Oauth2授权登录
-1. hash统一用"#"，如：http://localhost:8080/#/home/index
-2. 微信菜单或者分享页面进入网站时做统一的授权页面，如访问 http://localhost:8080/#/home/index 页面，则先访问 http://localhost:8080/static/auth.html?redirect=http%3a%2f%2flocalhost%3a8080%2f%23%2fhome%2findex ，token等信息在auth.html页面处理完成后再跳转到要访问的页面
+## 授权登录
+1. hash统一用"#"，如http://localhost:8080/#/home/index
+2. 新建一个页面单独用于微信授权登录，如：在网站根目录下新建auth.html
+3. 用户首次访问网站需先访问授权登录页面，在授权登录页面设置好相关信息后再跳回实际要访问的页面，如：用户访问http://localhost:8080/#/home/index页面，则先访问http://localhost:8080/auth.html?redirect_uri=http%3a%2f%2flocalhost%3a8080%2f%23%2fhome%2findex，在auth.html页面做微信的授权登录及token等信息的设置，然后跳回
 
-参考：[统一授权登录](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
+案例参考：[授权登录页面](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
 每次切换路由的时候都重新配置微信js-sdk，代码如下
@@ -84,6 +85,6 @@ wechatConifg(() => {
 </pre>
 
 ## 支付安全目录
-参考：[Oauth2授权登录](#Oauth2授权登录)的微信授权登录方案
+参考：[授权登录](#授权登录)的微信授权登录方案
 
 注：每次切换路由Android与iOS微信所获取到的安全路径不同
