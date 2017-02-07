@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>微信授权登录</title>
+</head>
+<body>
+	<script>
+		window.location.href = `./auth.html?redirect_uri=${encodeURIComponent(window.location.href)}` // 微信授权登录
+	</script>
+</body>
+</html>
