@@ -1,12 +1,18 @@
 <!doctype html>
 <html>
 <head>
+  <title>微信授权登录</title>
   <script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
   <script>
   var WX = {
     config: {
       appid: 'wx8de3b9a5bbf2ccdf', // 微信appid
-      tokenName: 'token' // 需要设置的token名称
+      scope: 'snsapi_base', // 微信应用授权作用域'snsapi_base' 或 'snsapi_userinfo'
+      expira: 0 // token过期时间（毫秒），0表示每次进入页面都更新token
+    },
+    storageName: {
+      token: 'token', // 需要设置的token名称
+      tokenCreatetime: '__WX_auth_token_createtime' // token的创建时间
     },
     getParam: function (key) { // 获取url参数
       var url = window.location.href;
@@ -18,9 +24,11 @@
       return decodeURIComponent(paramVal);
     },
     redirect: function () {
-      if (window.localStorage.getItem(WX.config.tokenName)) { // token存在，跳转到实际需要登录的页面
+      let token = window.localStorage.getItem(WX.storageName.token);
+      let tokenCreatetime = window.localStorage.getItem(WX.storageName.tokenCreatetime);
+      if (token && Date.parse(new Date()) - tokenCreatetime <= WX.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
         window.location.href = WX.getParam('redirect_uri') || '/';
-      } else { // token不存在，获取token
+      } else { // token不存在或过期，获取token
         var code = WX.getParam('code');
         if (code) { // code存在，去服务端交换token
           $.ajax({
@@ -31,7 +39,8 @@
             },
             dataType: 'json',
             success: function (res) {
-              window.localStorage.setItem(WX.config.tokenName, res.data);
+              window.localStorage.setItem(WX.storageName.token, res.data);
+              window.localStorage.setItem(WX.storageName.tokenCreatetime, Date.parse(new Date()));
               window.location.href = WX.getParam('redirect_uri') || '/';
             },
             error: function () {
@@ -43,7 +52,7 @@
                                  '?appid=' + WX.config.appid + 
                                  '&redirect_uri=' + encodeURIComponent(window.location.href) + 
                                  '&response_type=code' + 
-                                 '&scope=snsapi_base' + 
+                                 '&scope=' + WX.config.scope + 
                                  '&state=' + 
                                  '#wechat_redirect';
         }
