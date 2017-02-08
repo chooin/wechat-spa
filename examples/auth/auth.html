@@ -2,11 +2,12 @@
 <html>
 <head>
   <title>微信授权登录</title>
-  <script src="//cdn.bootcss.com/zepto/1.2.0/zepto.min.js"></script>
+  <meta charset="utf-8">
+  <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
   <script>
   var WX = {
     config: {
-      appid: 'wx8de3b9a5bbf2ccdf', // 微信appid
+      appid: 'wx8de3eqwe11kllk312', // 微信appid
       scope: 'snsapi_base', // 微信应用授权作用域'snsapi_base' 或 'snsapi_userinfo'
       expira: 0 // token过期时间（毫秒），0表示每次进入页面都更新token
     },
@@ -31,21 +32,14 @@
       } else { // token不存在或过期，获取token
         var code = WX.getParam('code');
         if (code) { // code存在，去服务端交换token
-          $.ajax({
-            url: '/wechat/token',
-            type: 'POST',
-            data: {
-              code: code
-            },
-            dataType: 'json',
-            success: function (res) {
-              window.localStorage.setItem(WX.storageName.token, res.data);
-              window.localStorage.setItem(WX.storageName.tokenCreatetime, Date.parse(new Date()));
-              window.location.href = WX.getParam('redirect_uri') || '/';
-            },
-            error: function () {
-              alert('授权登录失败');
-            }
+          axios.post('/wechat/token', {
+            code: code
+          }).then(function (res) {
+            window.localStorage.setItem(WX.storageName.token, res.data.data);
+            window.localStorage.setItem(WX.storageName.tokenCreatetime, Date.parse(new Date()));
+            window.location.href = WX.getParam('redirect_uri') || '/';
+          }, function (err) {
+            window.alert('微信授权失败');
           });
         } else { // code不存在，跳转到获取code页面
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' + 
