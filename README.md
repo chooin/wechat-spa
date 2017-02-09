@@ -115,7 +115,7 @@ cosnt _wechat = () => {
 
 // 调用分享
 _wechat().config().then(res => {
-  wechat().share({
+  _wechat().share({
     title,
     desc,
     link,
@@ -127,12 +127,9 @@ _wechat().config().then(res => {
 </pre>
 
 ## 微信支付
-1. 进入支付页面将hash从“#”设置成“?#”，如下
-原来支付页面：http://example.com/wx/#/cart/payment
-修改后的页面：http://example.com/wx/?#/cart/payment
-实现代码如下
+1. 进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment ，代码如下
 <pre>
-if (window.location.href.indexOf('?#') < 0) { // 解决微信支付bug
+if (window.location.href.indexOf('?#') < 0) {
   window.location.href = window.location.href.replace('#', '?#')
 } else {
   .. // 业务代码
@@ -140,7 +137,7 @@ if (window.location.href.indexOf('?#') < 0) { // 解决微信支付bug
 </pre>
 2. 完成支付操作后重新将“?#”重新设置成“#”，代码如下
 <pre>
-if (window.location.href.indexOf('?#') > 0) { // 解决微信支付bug
+if (window.location.href.indexOf('?#') > 0) {
   window.location.href = window.location.href.replace('?#', '#')
 } else {
   .. // 业务代码
