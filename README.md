@@ -51,7 +51,7 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 案例参考：[微信授权登录](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
-代码如下：
+分享的uri务必是 http://example.com/auht.html?redirect_uri=实际要访问的地址 ，配置好token等信息然后再跳回到实际要访问的地址，代码如下：
 <pre>
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
