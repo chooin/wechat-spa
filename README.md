@@ -1,8 +1,8 @@
 # 微信端单页面应用（SPA）常见问题汇总及解决方案
 #### 这事非常重要：
-1. 路由的hash务必是“#”，如：http://localhost:8080/#/home/index
-2. 每次切换路由都得重新配置wx.config
-3. 新建一个页面用于微信授权登录（包括微信分享），如：在网站根目录下新建auth.html
+1. 路由的hash务必是“#”，如：http://example.com/#/home/index ，**微信支付**必须二级或三级目录，如：http://example.com/wx/#/home/index
+2. 新建一个页面用于微信授权登录（包括微信分享），如：在网站根目录下新建auth.html
+3. 涉及调用jsapi的页面都得重新配置wx.config
 
 #### 目录：
 - [安装和使用微信js-sdk](#安装和使用微信js-sdk)
@@ -23,7 +23,7 @@ import wx from 'weixin-js-sdk'
 </pre>
 
 ## 配置wx.config
-配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href，如下例子：
+配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href，代码如下：
 <pre>
 window.location.href.indexOf('/cart/payment') > 0 ? window.location.href : window.location.href.split('#')[0]
 </pre>
@@ -52,12 +52,12 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 案例参考：[微信授权登录](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
-案例如下：
+代码如下：
 <pre>
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
 
-cosnt wechat = () => {
+cosnt _wechat = () => {
   // wx.config配置
   const config = () => {
     return new Promise((resolve, reject) => {
@@ -114,20 +114,22 @@ cosnt wechat = () => {
 }
 
 // 调用分享
-wechat().config().then(res => {
+_wechat().config().then(res => {
   wechat().share({
     title,
     desc,
     link,
     imgUrl
   })
+}, err => {
+  console.warn(err)
 })
 </pre>
 
 ## 微信支付
 1. 进入支付页面将hash从“#”设置成“?#”，如下
-原来支付页面：http://localhost:8080/#/cart/payment
-修改后的页面：http://localhost:8080/?#/cart/payment
+原来支付页面：http://example.com/wx/#/cart/payment
+修改后的页面：http://example.com/wx/?#/cart/payment
 实现代码如下
 <pre>
 if (window.location.href.indexOf('?#') < 0) { // 解决微信支付bug
@@ -136,7 +138,7 @@ if (window.location.href.indexOf('?#') < 0) { // 解决微信支付bug
   .. // 业务代码
 }
 </pre>
-2. 完成支付操作后重新将“?#”重新设置成“#”，实现代码如下
+2. 完成支付操作后重新将“?#”重新设置成“#”，代码如下
 <pre>
 if (window.location.href.indexOf('?#') > 0) { // 解决微信支付bug
   window.location.href = window.location.href.replace('?#', '#')
@@ -145,4 +147,4 @@ if (window.location.href.indexOf('?#') > 0) { // 解决微信支付bug
 }
 </pre>
 
-注：每次切换路由Android与iOS微信所获取到的支付安全目录不同
+注：每次切换路由Android与iOS所获取到的支付安全目录不同，刷新支付页面可以解决
