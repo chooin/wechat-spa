@@ -23,10 +23,9 @@ import wx from 'weixin-js-sdk'
 </pre>
 
 ## 配置wx.config
-配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href，代码如下：
-<pre>
-window.location.href.indexOf('/cart/payment') > 0 ? window.location.href : window.location.href.split('#')[0]
-</pre>
+配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href
+
+参考：[微信分享](#微信分享)
 
 ## 标题无法更新
 在切换页面路由之后需在body里面添加iframe，随后移除掉iframe即可，代码如下
@@ -89,7 +88,7 @@ cosnt _wechat = () => {
   const share = ({title, desc, link, imgUrl}) => {
     wx.ready(() => {
       let authUri = `http://example.com/auth.html?redirect_uri=${encodeURIComponent(link)}`
-      let OauthUri = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wechat.appId}&redirect_uri=${encodeURIComponent(authUri)}&response_type=code&scope=snsapi_base#wechat_redirect`
+      let OauthUri = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wechat.appId}&amp;redirect_uri=${encodeURIComponent(authUri)}&amp;response_type=code&amp;scope=snsapi_base#wechat_redirect`
       wx.ready(() => {
         wx.onMenuShareTimeline({
           title,
@@ -109,7 +108,7 @@ cosnt _wechat = () => {
       })
     }
   }
-  
+
   return {config, share}
 }
 
@@ -129,7 +128,7 @@ _wechat().config().then(res => {
 ## 微信支付
 1. 进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment ，代码如下
 <pre>
-if (window.location.href.indexOf('?#') < 0) {
+if (window.location.href.indexOf('?#') &lt; 0) {
   window.location.href = window.location.href.replace('#', '?#')
 } else {
   .. // 业务代码
@@ -137,7 +136,7 @@ if (window.location.href.indexOf('?#') < 0) {
 </pre>
 2. 完成支付操作后重新将“?#”重新设置成“#”，代码如下
 <pre>
-if (window.location.href.indexOf('?#') > 0) {
+if (window.location.href.indexOf('?#') &gt; 0) {
   window.location.href = window.location.href.replace('?#', '#')
 } else {
   .. // 业务代码
