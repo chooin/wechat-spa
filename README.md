@@ -87,12 +87,11 @@ cosnt _wechat = () => {
   // 分享配置
   const share = ({title, desc, link, imgUrl}) => {
     wx.ready(() => {
-      let authUri = `http://example.com/auth.html?redirect_uri=${encodeURIComponent(link)}`
-      let OauthUri = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wechat.appId}&amp;redirect_uri=${encodeURIComponent(authUri)}&amp;response_type=code&amp;scope=snsapi_base#wechat_redirect`
+      let link = `http://example.com/auth.html?redirect_uri=${encodeURIComponent(link)}`
       wx.ready(() => {
         wx.onMenuShareTimeline({
           title,
-          link: OauthUri,
+          link,
           imgUrl,
           success () {},
           cancel () {}
@@ -100,7 +99,7 @@ cosnt _wechat = () => {
         wx.onMenuShareAppMessage({
           title,
           desc,
-          link: OauthUri,
+          link,
           imgUrl,
           success () {},
           cancel () {}
