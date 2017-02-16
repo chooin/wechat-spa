@@ -25,8 +25,8 @@
       return decodeURIComponent(paramVal);
     },
     redirect: function () {
-      let token = window.localStorage.getItem(WX.storageName.token);
-      let tokenCreatetime = window.localStorage.getItem(WX.storageName.tokenCreatetime);
+      var token = window.localStorage.getItem(WX.storageName.token);
+      var tokenCreatetime = window.localStorage.getItem(WX.storageName.tokenCreatetime);
       if (token && Date.parse(new Date()) - tokenCreatetime <= WX.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
         window.location.href = WX.getParam('redirect_uri') || '/';
       } else { // token不存在或过期，获取token
