@@ -14,13 +14,13 @@
 
 ## 安装和使用微信js-sdk
 1. npm安装
-<pre>
+```
 npm install weixin-js-sdk --save
-</pre>
+```
 2. ES6使用
-<pre>
+```
 import wx from 'weixin-js-sdk'
-</pre>
+```
 
 ## 配置wx.config
 配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href
@@ -29,7 +29,7 @@ import wx from 'weixin-js-sdk'
 
 ## 标题无法更新
 在切换页面路由之后需在body里面添加iframe，随后移除掉iframe即可，代码如下
-<pre>
+```
 // iPhone，iPod，iPad下无法更新标题
 if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
   let iframe = document.createElement('iframe')
@@ -43,7 +43,7 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
   }
   body.appendChild(iframe)
 }
-</pre>
+```
 
 ## 微信授权登录
 用户首次访问网站需先访问授权登录页面，在授权登录页面设置好相关信息后再跳回实际要访问的页面，如：用户访问 http://example.com/#/home/index 页面，则先访问 http://example.com/auth.html?redirect_uri=http%3a%2f%2flocalhost%3a8080%2f%23%2fhome%2findex ，在auth.html页面完成授权登录、token等信息的写入，然后跳回到实际访问的页面
@@ -52,7 +52,7 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 
 ## 微信分享
 分享的uri务必是 http://example.com/auht.html?redirect_uri=实际要访问的地址 ，配置好token等信息然后再跳回到实际要访问的地址，代码如下：
-<pre>
+```
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
 
@@ -123,24 +123,24 @@ _wechat().config().then(res => {
 }, err => {
   console.warn(err)
 })
-</pre>
+```
 
 ## 微信支付
 1. 进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment ，代码如下
-<pre>
+```
 if (window.location.href.indexOf('?#') &lt; 0) {
-  window.location.href = window.location.href.replace('#', '?#')
-} else {
-  .. // 业务代码
+  let uri = window.location.href
+  window.history.pushState({}, '', `?#${uri.split('#')[1]}`)
 }
-</pre>
+.. // 业务代码
+```
 2. 完成支付操作后重新将“?#”重新设置成“#”，代码如下
-<pre>
+```
 if (window.location.href.indexOf('?#') &gt; 0) {
-  window.location.href = window.location.href.replace('?#', '#')
-} else {
-  .. // 业务代码
+  let uri = window.location.href
+  window.history.pushState({}, '', `#${uri.split('#')[1]}`)
 }
-</pre>
+.. // 业务代码
+```
 
 注：每次切换路由Android与iOS所获取到的支付安全目录不同，刷新支付页面可以解决
