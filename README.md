@@ -1,10 +1,13 @@
 # 微信端单页面应用（SPA）常见问题汇总及解决方案
+
 #### 这事非常重要：
+
 1. 路由的hash务必是“#”，如：http://example.com/#/home/index ，**微信支付**必须二级或三级目录，如：http://example.com/wx/#/home/index
 2. 新建一个页面用于微信授权登录（包括微信分享），如：在网站根目录下新建auth.html
 3. 涉及调用jsapi的页面都得重新配置wx.config
 
 #### 目录：
+
 - [安装和使用微信js-sdk](#安装和使用微信js-sdk)
 - [配置wx.config](#配置wx.config)
 - [标题无法更新](#标题无法更新)
@@ -13,16 +16,21 @@
 - [微信支付](#微信支付)
 
 ## 安装和使用微信js-sdk
+
 1. npm安装
+
 ```
 npm install weixin-js-sdk --save
 ```
+
 2. ES6使用
+
 ```
 import wx from 'weixin-js-sdk'
 ```
 
 ## 配置wx.config
+
 配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href
 
 参考：[微信分享](#微信分享)
@@ -125,14 +133,17 @@ _wechat().config().then(res => {
 ## 微信支付
 1. 进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment 
 
-##### 方法一（推荐）
+方法一（推荐）
+
 ```
 if (window.location.href.indexOf('?#') < 0) {
   window.history.pushState({}, '', '?#/cart/payment')
 }
 .. // 业务代码
 ```
-###### 方法二
+
+方法二
+
 ```
 if (window.location.href.indexOf('?#') < 0) {
   window.location.href = window.location.href.replace('#', '?#')
@@ -140,16 +151,20 @@ if (window.location.href.indexOf('?#') < 0) {
   .. // 业务代码
 }
 ```
+
 2. 完成支付操作后重新将“?#”重新设置成“#”，代码如下
 
-##### 方法一（推荐）
+方法一（推荐）
+
 ```
 if (window.location.href.indexOf('?#') > 0) {
   window.history.pushState({}, '', window.location.href.replace('?#', '#'))
 }
 .. // 业务代码
 ```
-###### 方法二
+
+方法二
+
 ```
 if (window.location.href.indexOf('?#') > 0) {
   window.location.href = window.location.href.replace('?#', '#')
