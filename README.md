@@ -128,7 +128,7 @@ _wechat().config().then(res => {
 ##### 方法一（推荐）
 ```
 if (window.location.href.indexOf('?#') < 0) {
-  window.history.pushState({}, '', window.location.href.replace('#', '?#'))
+  window.history.pushState({}, '', '?#/cart/payment')
 }
 .. // 业务代码
 ```
