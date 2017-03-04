@@ -86,27 +86,24 @@ cosnt _wechat = () => {
 
   // 分享配置
   const share = ({title, desc, link, imgUrl}) => {
+    let link = `http://example.com/auth.html?redirect_uri=${encodeURIComponent(link)}`
     wx.ready(() => {
-      let authUri = `http://example.com/auth.html?redirect_uri=${encodeURIComponent(link)}`
-      let OauthUri = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${wechat.appId}&amp;redirect_uri=${encodeURIComponent(authUri)}&amp;response_type=code&amp;scope=snsapi_base#wechat_redirect`
-      wx.ready(() => {
-        wx.onMenuShareTimeline({
-          title,
-          link: OauthUri,
-          imgUrl,
-          success () {},
-          cancel () {}
-        })
-        wx.onMenuShareAppMessage({
-          title,
-          desc,
-          link: OauthUri,
-          imgUrl,
-          success () {},
-          cancel () {}
-        })
+      wx.onMenuShareTimeline({
+        title,
+        link,
+        imgUrl,
+        success () {},
+        cancel () {}
       })
-    }
+      wx.onMenuShareAppMessage({
+        title,
+        desc,
+        link,
+        imgUrl,
+        success () {},
+        cancel () {}
+      })
+    })
   }
 
   return {config, share}
@@ -126,21 +123,37 @@ _wechat().config().then(res => {
 ```
 
 ## 微信支付
-1. 进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment ，代码如下
+1. 进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment 
+##### 方法一（推荐）
 ```
-if (window.location.href.indexOf('?#') &lt; 0) {
-  let uri = window.location.href
-  window.history.pushState({}, '', `?#${uri.split('#')[1]}`)
+if (window.location.href.indexOf('?#') < 0) {
+  window.history.pushState({}, '', window.location.href.replace('#', '?#'))
 }
 .. // 业务代码
+```
+###### 方法二
+```
+if (window.location.href.indexOf('?#') < 0) {
+  window.location.href = window.location.href.replace('#', '?#')
+} else {
+  .. // 业务代码
+}
 ```
 2. 完成支付操作后重新将“?#”重新设置成“#”，代码如下
+##### 方法一（推荐）
 ```
-if (window.location.href.indexOf('?#') &gt; 0) {
-  let uri = window.location.href
-  window.history.pushState({}, '', `#${uri.split('#')[1]}`)
+if (window.location.href.indexOf('?#') > 0) {
+  window.history.pushState({}, '', window.location.href.replace('?#', '#'))
 }
 .. // 业务代码
+```
+###### 方法二
+```
+if (window.location.href.indexOf('?#') > 0) {
+  window.location.href = window.location.href.replace('?#', '#')
+} else {
+  .. // 业务代码
+}
 ```
 
 注：每次切换路由Android与iOS所获取到的支付安全目录不同，刷新支付页面可以解决
