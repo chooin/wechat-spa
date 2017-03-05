@@ -17,13 +17,13 @@
 
 ## 安装和使用微信js-sdk
 
-1.npm安装
+1. npm安装
 
 ```
 npm install weixin-js-sdk --save
 ```
 
-2.ES6使用
+2. ES6使用
 
 ```
 import wx from 'weixin-js-sdk'

@@ -39,6 +39,7 @@
             window.localStorage.setItem(WX.storageName.tokenCreatetime, Date.parse(new Date()));
             window.location.href = WX.getParam('redirect_uri') || '/';
           }, function (err) {
+            // 调用接口失败可以调用微信的js-sdk的closeWindow方法关闭浏览器窗口
             window.alert('微信授权失败');
           });
         } else { // code不存在，跳转到获取code页面
