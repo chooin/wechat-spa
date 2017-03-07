@@ -15,14 +15,14 @@
       token: 'token', // 需要设置的token名称
       tokenCreatetime: '__WX_auth_token_createtime' // token的创建时间
     },
-    getParam: function (key) { // 获取url参数
-      var url = window.location.href;
-      var get = url.indexOf(key + '=');
-      if (get === -1) return false;
-      var paramVal = url.slice(key.length + get + 1);
-      var nextParam = paramVal.indexOf('&');
-      if (nextParam !== -1) paramVal = paramVal.slice(0, nextParam);
-      return decodeURIComponent(paramVal);
+    getParam: function (name, url) { // 获取url参数
+      if (!url) url = window.location.href;
+      name = name.replace(/[\[\]]/g, '\\$&');
+      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+          results = regex.exec(url);
+      if (!results) return null;
+      if (!results[2]) return '';
+      return decodeURIComponent(results[2].replace(/\+/g, ' '));
     },
     redirect: function () {
       var token = window.localStorage.getItem(WX.storageName.token);
