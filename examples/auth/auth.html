@@ -35,7 +35,7 @@
           axios.post('/wechat/token', {
             code: code
           }).then(function (res) {
-            window.localStorage.setItem(WX.storageName.token, res.data.data);
+            window.localStorage.setItem(WX.storageName.token, res.data);
             window.localStorage.setItem(WX.storageName.tokenCreatetime, Date.parse(new Date()));
             window.location.href = WX.getParam('redirect_uri') || '/';
           }, function (err) {
