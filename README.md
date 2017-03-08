@@ -133,16 +133,6 @@ _wechat().config().then(res => {
 ## 微信支付
 1.进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment 
 
-方法一（推荐）
-
-```
-if (window.location.href.indexOf('?#') < 0) {
-  window.history.pushState({}, '', '?#/cart/payment')
-}
-.. // 业务代码
-```
-
-方法二
 
 ```
 if (window.location.href.indexOf('?#') < 0) {
@@ -154,23 +144,12 @@ if (window.location.href.indexOf('?#') < 0) {
 
 2.完成支付操作后重新将“?#”重新设置成“#”，代码如下
 
-方法一（推荐）
 
 ```
 if (window.location.href.indexOf('?#') > 0) {
   window.history.pushState({}, '', window.location.href.replace('?#', '#'))
 }
 .. // 业务代码
-```
-
-方法二
-
-```
-if (window.location.href.indexOf('?#') > 0) {
-  window.location.href = window.location.href.replace('?#', '#')
-} else {
-  .. // 业务代码
-}
 ```
 
 注：每次切换路由Android与iOS所获取到的支付安全目录不同，刷新支付页面可以解决
