@@ -56,7 +56,7 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 ## 微信授权登录
 用户首次访问网站需先访问授权登录页面，在授权登录页面设置好相关信息后再跳回实际要访问的页面，如：用户访问 http://example.com/wx/#/home/index 页面，则先访问 http://example.com/auth.html?redirect_uri=http%3a%2f%2fexample.com%2fwx%2f&state=%2fhome%2findex
 ，流程图如下：
-<img width="600" src="https://github.com/Chooin/wechat-spa/blob/master/picture/flow.png">
+<img width="600" src="https://github.com/Chooin/wechat-spa/blob/dev/picture/flow.png">
 
 案例参考：[微信授权登录](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
