@@ -2,8 +2,8 @@
 
 #### 这事非常重要：
 
-1. 路由的hash务必是“#”，如：http://example.com/#/home/index ，**微信支付**必须二级或三级目录，如：http://example.com/wx/#/home/index
-2. 新建一个页面用于微信授权登录（包括微信分享），如：在网站根目录下新建auth.html
+1. 路由的hash务必是“#”，如：http://example.com/#/home/index ，涉及**微信支付**必须使用二级或三级目录，如：http://example.com/wx/#/home/index
+2. 新建一个页面用于微信授权登录（微信分享），如：在网站根目录下新建auth.html
 3. 涉及调用jsapi的页面都得重新配置wx.config
 
 #### 目录：
@@ -54,12 +54,14 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 ```
 
 ## 微信授权登录
-用户首次访问网站需先访问授权登录页面，在授权登录页面设置好相关信息后再跳回实际要访问的页面，如：用户访问 http://example.com/#/home/index 页面，则先访问 http://example.com/auth.html?redirect_uri=http%3a%2f%2flocalhost%3a8080%2f%23%2fhome%2findex ，在auth.html页面完成授权登录、token等信息的写入，然后跳回到实际访问的页面
+用户首次访问网站需先访问授权登录页面，在授权登录页面设置好相关信息后再跳回实际要访问的页面，如：用户访问 http://example.com/wx/#/home/index 页面，则先访问 http://example.com/auth.html?redirect_uri=http%3a%2f%2fexample.com%2fwx%2f&state=%2fhome%2findex
+，流程图如下：
+<img width="600" src="https://github.com/Chooin/wechat-spa/blob/master/picture/flow.png">
 
 案例参考：[微信授权登录](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
-分享的uri务必是 http://example.com/auht.html?redirect_uri=实际要访问的地址 ，配置好token等信息然后再跳回到实际要访问的地址，代码如下：
+分享的uri务必是 http://example.com/auht.html?redirect_uri=根目录&state=要访问的路由 ，配置好token等信息然后再跳回到实际要访问的地址，代码如下：
 ```
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
@@ -131,8 +133,12 @@ _wechat().config().then(res => {
 ```
 
 ## 微信支付
-1.进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment 
 
+#### 方案一
+
+实现原理在支付的时候刷新页面
+
+##### 步骤一、进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment 
 
 ```
 if (window.location.href.indexOf('?#') < 0) {
@@ -142,8 +148,7 @@ if (window.location.href.indexOf('?#') < 0) {
 }
 ```
 
-2.完成支付操作后重新将“?#”重新设置成“#”，代码如下
-
+##### 步骤二、完成支付操作后重新将“?#”重新设置成“#”，代码如下
 
 ```
 if (window.location.href.indexOf('?#') > 0) {
@@ -152,4 +157,6 @@ if (window.location.href.indexOf('?#') > 0) {
 .. // 业务代码
 ```
 
-注：每次切换路由Android与iOS所获取到的支付安全目录不同，刷新支付页面可以解决
+#### 方案二
+
+实现原理
