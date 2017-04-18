@@ -18,6 +18,7 @@
 - [微信授权登录](#微信授权登录)
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
+- [联系方式](#联系方式)
 
 ## 安装和使用微信js-sdk
 
@@ -33,7 +34,7 @@ npm install weixin-js-sdk --save
 import wx from 'weixin-js-sdk'
 ```
 
-注：也可以通过修改主入口文件和webpack解决，具体请自行查资料。
+注：也可以通过修改Webpack配置解决，具体请自行查资料。
 
 ## 配置wx.config
 
@@ -44,6 +45,7 @@ import wx from 'weixin-js-sdk'
 ## 标题无法更新
 
 在切换页面路由之后需在body里面添加iframe，随后移除掉iframe即可，代码如下
+
 ```
 // iPhone，iPod，iPad下无法更新标题
 if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
@@ -61,15 +63,16 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 ```
 
 ## 微信授权登录
-通过微信菜单或微信分享访问网站需先访问授权登录页面(如先访问：http://example.com/wx/auth.html)，在授权登录页面设置token等信息后再跳回到index.html文件所在的根目录下(如：http://example.com/wx/)，然后利用SPA路由的钩子跳转到实际要访问的地址。完整流程如下：
+通过微信菜单或微信分享访问SPA应用需先访问授权登录页面(如先访问：http://example.com/wx/auth.html)，在授权登录页面设置token等信息后再跳回到index.html文件所在的根目录下(如：http://example.com/wx/)，然后利用SPA路由的钩子跳转到实际要访问的地址。
 
 授权登录页面参考：[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
 
-分享的url务必是 http://example.com/wx/auth.html?redirect_uri=[SPA应用部署路径]&fullPath=[要访问的路由] ，代码如下：
+分享的url务必是 http://example.com/wx/auth.html?redirect_uri={SPA应用部署的url地址}&fullPath={要访问的路由} ，代码如下：
 
 流程图参考：[微信授权登录](#微信授权登录)
+
 ```
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
@@ -153,8 +156,10 @@ _wechat().config().then(res => {
 
 造成支付失败的原因：iOS识别支付安全目录路径规则是进入SPA应用的第一个页面所对应的url。
 
-**如：** 
-
-我们进入SPA应用的第一个页面是 http://example.com/wx/#/home/index 或是 http://example.com/wx/#/me/index ，则iOS获取到的安全目录路径分别是 http://example.com/wx/#/home/index 、 http://example.com/wx/#/me/index 。这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入SPA应用的页面是行不通的。
+**如：** 我们进入SPA应用的第一个页面是 http://example.com/wx/#/home/index 或是 http://example.com/wx/#/me/index ，则iOS获取到的安全目录路径分别是 http://example.com/wx/#/home/index 、 http://example.com/wx/#/me/index 。这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入SPA应用的页面是行不通的。
 
 **解决思路：** 我们进入SPA应用的第一个页面都是 http://example.com/wx/ 然后通过SPA路由的钩子重定向到自己想要访问的页面。
+
+## 联系方式
+
+QQ：465353876
