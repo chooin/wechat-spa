@@ -2,9 +2,13 @@
 
 #### 这事非常重要：
 
-1. 路由的hash务必是“#”，如：http://example.com/#/home/index ，涉及**微信支付**必须使用二级或三级目录，如：http://example.com/wx/#/home/index
-2. 新建一个页面用于微信授权登录（微信分享），如：在网站根目录下新建auth.html
-3. 涉及调用jsapi的页面都得重新配置wx.config
+1. 路由的hash务必是“#”，如：http://example.com/wx/#/home/index 
+2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改Nginx、Apache配置重写url实现，或者修改Webpack的配置实现。（**强烈建议使用二级目录作为SPA应用部署目录**）
+3. 新建一个页面用于微信授权登录（所有需要进入SPA应用的url地址都要通过该页面进行跳转，如：微信分享，菜单），如：在网站根目录下新建[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
+4. 涉及调用jsapi的页面都得重新配置wx.config
+5. 流程图：
+
+<img width="600" src="https://github.com/Chooin/wechat-spa/blob/dev/picture/flow.png">
 
 #### 目录：
 
@@ -29,13 +33,16 @@ npm install weixin-js-sdk --save
 import wx from 'weixin-js-sdk'
 ```
 
+注：也可以通过修改主入口文件和webpack解决，具体请自行查资料。
+
 ## 配置wx.config
 
-配置wx.config一般页面使用window.location.href.split('#')[0]，支付页面使用window.location.href
+非支付页面使用window.location.href.split('#')[0]，支付页面使用window.location.href，将得到的url传递给服务端进行签名操作
 
 参考：[微信分享](#微信分享)
 
 ## 标题无法更新
+
 在切换页面路由之后需在body里面添加iframe，随后移除掉iframe即可，代码如下
 ```
 // iPhone，iPod，iPad下无法更新标题
@@ -54,14 +61,15 @@ if (/ip(hone|od|ad)/i.test(navigator.userAgent)) {
 ```
 
 ## 微信授权登录
-用户首次访问网站需先访问授权登录页面，在授权登录页面设置好相关信息后再跳回实际要访问的页面，如：用户访问 http://example.com/wx/#/home/index 页面，则先访问 http://example.com/auth.html?redirect_uri=http%3a%2f%2fexample.com%2fwx%2f&state=%2fhome%2findex
-，流程图如下：
-<img width="600" src="https://github.com/Chooin/wechat-spa/blob/dev/picture/flow.png">
+通过微信菜单或微信分享访问网站需先访问授权登录页面(如先访问：http://example.com/wx/auth.html)，在授权登录页面设置token等信息后再跳回到index.html文件所在的根目录下(如：http://example.com/wx/)，然后利用SPA路由的钩子跳转到实际要访问的地址。完整流程如下：
 
-案例参考：[微信授权登录](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
+授权登录页面参考：[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
-分享的uri务必是 http://example.com/auht.html?redirect_uri=根目录&state=要访问的路由 ，配置好token等信息然后再跳回到实际要访问的地址，代码如下：
+
+分享的url务必是 http://example.com/wx/auth.html?redirect_uri=[SPA应用部署路径]&fullPath=[要访问的路由] ，代码如下：
+
+流程图参考：[微信授权登录](#微信授权登录)
 ```
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
@@ -78,10 +86,10 @@ cosnt _wechat = () => {
       }).then(res => {
         wx.config({
           debug: false,
-          appId: res.appId,
-          timestamp: res.timestamp,
-          nonceStr: res.nonceStr,
-          signature: res.signature,
+          appId: res.data.appId,
+          timestamp: res.data.timestamp,
+          nonceStr: res.data.nonceStr,
+          signature: res.data.signature,
           jsApiList: [
             'onMenuShareTimeline',
             'onMenuShareAppMessage'
@@ -95,8 +103,11 @@ cosnt _wechat = () => {
   }
 
   // 分享配置
-  const share = ({title, desc, link, imgUrl}) => {
-    let link = `http://example.com/auth.html?redirect_uri=${encodeURIComponent(link)}`
+  const share = ({title, desc, fullPath, imgUrl}) => {
+    let url = window.location.href
+    let redirect_uri = encodeURIComponent(url.split('#')[0])
+    let fullpath = encodeURIComponent(fullPath)
+    let link = `http://example.com/auth.html?redirect_uri=${redirect_uri}&fullPath=${fullPath}`
     wx.ready(() => {
       wx.onMenuShareTimeline({
         title,
@@ -121,10 +132,16 @@ cosnt _wechat = () => {
 
 // 调用分享
 _wechat().config().then(res => {
+  // 分享信息
+  let title = 'wechat-spa'
+  let desc = 'Wechat SPA'
+  let fullPath = '/home/index'
+  let imgUrl = 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png'
+  // 配置分享
   _wechat().share({
     title,
     desc,
-    link,
+    fullPath,
     imgUrl
   })
 }, err => {
@@ -134,29 +151,10 @@ _wechat().config().then(res => {
 
 ## 微信支付
 
-#### 方案一
+造成支付失败的原因：iOS识别支付安全目录路径规则是进入SPA应用的第一个页面所对应的url。
 
-实现原理在支付的时候刷新页面
+**如：** 
 
-##### 步骤一、进入支付页面将hash从“#”设置成“?#”，如：原来支付页面：http://example.com/wx/#/cart/payment ,修改后的页面：http://example.com/wx/?#/cart/payment 
+我们进入SPA应用的第一个页面是 http://example.com/wx/#/home/index 或是 http://example.com/wx/#/me/index ，则iOS获取到的安全目录路径分别是 http://example.com/wx/#/home/index 、 http://example.com/wx/#/me/index 。这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入SPA应用的页面是行不通的。
 
-```
-if (window.location.href.indexOf('?#') < 0) {
-  window.location.href = window.location.href.replace('#', '?#')
-} else {
-  .. // 业务代码
-}
-```
-
-##### 步骤二、完成支付操作后重新将“?#”重新设置成“#”，代码如下
-
-```
-if (window.location.href.indexOf('?#') > 0) {
-  window.history.pushState({}, '', window.location.href.replace('?#', '#'))
-}
-.. // 业务代码
-```
-
-#### 方案二
-
-实现原理
+**解决思路：** 我们进入SPA应用的第一个页面都是 http://example.com/wx/ 然后通过SPA路由的钩子重定向到自己想要访问的页面。
