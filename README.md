@@ -75,8 +75,6 @@ SPA应用部署的地址，如：http://example.com/wx/ ；访问的路由，如
 
 参考代码如下：
 
-流程图参考：[微信授权登录](#微信授权登录)
-
 ```
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
