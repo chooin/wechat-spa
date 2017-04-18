@@ -5,7 +5,7 @@
 1. 路由的hash务必是“#”，如：http://example.com/wx/#/home/index 
 2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改Nginx、Apache配置重写url实现，或者修改Webpack的配置实现。（**强烈建议使用二级目录作为SPA应用部署目录**）
 3. 新建一个页面用于微信授权登录，如：在网站根目录下新建[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth) （所有需要进入SPA应用的url地址都要通过该页面进行跳转，如：微信分享，菜单）
-4. 涉及调用jsapi的页面都得重新配置wx.config
+4. 涉及调用jsapi的页面都得重新配置wx.config，配置wx.config的时候不要将页面内容呈现出来，待配置完成再呈现
 5. 流程图：
 
 <img width="600" src="https://github.com/Chooin/wechat-spa/blob/dev/picture/flow.png">
