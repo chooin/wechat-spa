@@ -7,7 +7,7 @@
 3. 新建一个页面用于微信授权登录，如：在根目录static文件夹下新建[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth) （所有需要进入SPA应用的url地址都要通过该页面进行跳转，如：微信分享，菜单）
 4. 涉及调用jsapi的页面都得重新配置wx.config
 5. 流程图：
-[分享/菜单]（url）
+
 
 #### 目录：
 
