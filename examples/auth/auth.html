@@ -3,7 +3,7 @@
 <head>
   <title>微信授权登录</title>
   <meta charset="utf-8">
-  <script src="//cdn.bootcss.com/axios/0.15.3/axios.min.js"></script>
+  <script src="//cdn.bootcss.com/axios/0.16.1/axios.min.js"></script>
   <script>
   var WX = {
     config: {
@@ -13,7 +13,8 @@
     },
     storageName: {
       token: 'token', // 需要设置的token名称
-      tokenCreatetime: '__WX_auth_token_createtime' // token的创建时间
+      tokenCreatetime: '__WX_auth_token_createtime', // token的创建时间
+      fullPath: 'fullPath' //hash后面的部分，如：/home/index
     },
     getParam: function (name, url) { // 获取url参数
       if (!url) url = window.location.href;
@@ -25,29 +26,33 @@
       return decodeURIComponent(results[2].replace(/\+/g, ' '));
     },
     redirect: function () {
-      var token = window.localStorage.getItem(WX.storageName.token);
-      var tokenCreatetime = window.localStorage.getItem(WX.storageName.tokenCreatetime);
-      if (token && Date.parse(new Date()) - tokenCreatetime <= WX.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
-        window.location.href = WX.getParam('redirect_uri') || '/';
+      var token = window.localStorage.getItem(this.storageName.token);
+      var tokenCreatetime = window.localStorage.getItem(this.storageName.tokenCreatetime);
+      if (token && Date.parse(new Date()) - tokenCreatetime <= this.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
+        window.location.href = this.getParam('redirect_uri') || '/';
       } else { // token不存在或过期，获取token
-        var code = WX.getParam('code');
+        var code = this.getParam('code');
         if (code) { // code存在，去服务端交换token
-          axios.post('/wechat/token', {
-            code: code
+          axios.get('http://example.com/v1/wechat/token', {
+            params: {
+              code: code
+            }
           }).then(function (res) {
-            window.localStorage.setItem(WX.storageName.token, res.data);
-            window.localStorage.setItem(WX.storageName.tokenCreatetime, Date.parse(new Date()));
-            window.location.href = WX.getParam('redirect_uri') || '/';
+            window.localStorage.setItem(this.storageName.token, res.data.token);
+            window.localStorage.setItem(this.storageName.tokenCreatetime, Date.parse(new Date()));
+            window.location.href = this.getParam('redirect_uri') || '/';
           }, function (err) {
             // 调用接口失败可以调用微信的js-sdk的closeWindow方法关闭浏览器窗口
             window.alert('微信授权失败');
           });
         } else { // code不存在，跳转到获取code页面
+          var fullPath = this.getParam('fullPath');
+          if (fullPath) window.localStorage.setItem(this.storageName.fullPath, fullPath);
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
-                                 '?appid=' + WX.config.appid +
+                                 '?appid=' + this.config.appid +
                                  '&redirect_uri=' + encodeURIComponent(window.location.href) +
                                  '&response_type=code' +
-                                 '&scope=' + WX.config.scope +
+                                 '&scope=' + this.config.scope +
                                  '&state=' +
                                  '#wechat_redirect';
         }

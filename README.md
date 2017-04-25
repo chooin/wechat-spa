@@ -3,12 +3,11 @@
 #### 这事非常重要：
 
 1. 路由的hash务必是“#”，如：http://example.com/wx/#/home/index 
-2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改Nginx、Apache配置重写url实现，或者修改Webpack的配置实现。（**强烈建议使用二级目录作为SPA应用部署目录**）
-3. 新建一个页面用于微信授权登录，如：在网站根目录下新建[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth) （所有需要进入SPA应用的url地址都要通过该页面进行跳转，如：微信分享，菜单）
-4. 涉及调用jsapi的页面都得重新配置wx.config，配置wx.config的时候不要将页面内容呈现出来，待配置完成再呈现
+2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改Nginx、Apache配置重写url实现，或者修改Webpack的配置实现。
+3. 新建一个页面用于微信授权登录，如：在根目录static文件夹下新建[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth) （所有需要进入SPA应用的url地址都要通过该页面进行跳转，如：微信分享，菜单）
+4. 涉及调用jsapi的页面都得重新配置wx.config
 5. 流程图：
-
-<img width="600" src="https://github.com/Chooin/wechat-spa/blob/dev/picture/flow.png">
+[分享/菜单]（url）
 
 #### 目录：
 
@@ -69,7 +68,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 
 ## 微信分享
 
-分享的url务必是 http://example.com/wx/auth.html?redirect_uri={SPA应用部署的url地址}&fullPath={访问的路由} ，
+分享的url务必是 http://example.com/static/auth.html?redirect_uri={SPA应用部署的地址}&fullPath={访问的路由} ，
 
 SPA应用部署的地址，如：http://example.com/wx/ ；访问的路由，如：/product 或 /product?page=1。两个值都需要通过encodeURIComponent转成url编码
 
@@ -168,5 +167,7 @@ _wechat().config().then(res => {
 ## 联系方式
 
 有质疑、有误的，反馈给我，谢谢
+
+## 完整参考
 
 QQ：465353876
