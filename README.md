@@ -106,7 +106,7 @@ cosnt _wechat = () => {
   }
 
   // 分享配置
-  const share = ({title, desc, fullPath, imgUrl}) => {
+  const share = ({ title, desc, fullPath, imgUrl }) => {
     let url = window.location.href
     let redirect_uri = encodeURIComponent(url.split('#')[0])
     let fullpath = encodeURIComponent(fullPath)
