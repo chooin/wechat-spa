@@ -138,17 +138,12 @@ cosnt _wechat = () => {
 
 // 调用分享
 _wechat().config().then(res => {
-  // 分享信息
-  let title = 'wechat-spa'
-  let desc = 'Wechat SPA'
-  let fullPath = '/home/index'
-  let imgUrl = 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png'
   // 配置分享
   _wechat().share({
-    title,
-    desc,
-    fullPath,
-    imgUrl
+    title: 'wechat-spa',
+    desc: 'Wechat SPA',
+    fullPath: '/home/index',
+    imgUrl: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png'
   })
 }, err => {
   console.warn(err)
