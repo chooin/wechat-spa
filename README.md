@@ -82,7 +82,7 @@ cosnt _wechat = () => {
   const config = () => {
     return new Promise((resolve, reject) => {
       // 获取服务端微信配置信息
-      axios.get('http://api.example.com/wechat/config', {
+      axios.get('http://api.example.com/v1/wechat/config', {
         params: {
           url: window.location.href.indexOf('/cart/payment') > 0 ? window.location.href : window.location.href.split('#')[0]
         }
@@ -110,7 +110,7 @@ cosnt _wechat = () => {
     let url = window.location.href
     let redirect_uri = encodeURIComponent(url.split('#')[0])
     let fullpath = encodeURIComponent(fullPath)
-    let link = `http://example.com/auth.html?redirect_uri=${redirect_uri}&fullPath=${fullPath}`
+    let link = `http://example.com/static/auth.html?redirect_uri=${redirect_uri}&fullPath=${fullPath}`
     wx.ready(() => {
       wx.onMenuShareTimeline({
         title,
@@ -143,7 +143,7 @@ _wechat().config().then(res => {
     title: 'wechat-spa',
     desc: 'Wechat SPA',
     fullPath: '/home/index',
-    imgUrl: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_120x44dp.png'
+    imgUrl: 'https://www.baidu.com/img/bd_logo1.png'
   })
 }, err => {
   console.warn(err)
