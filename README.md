@@ -6,7 +6,7 @@
 2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改Nginx、Apache配置重写url实现，或者修改Webpack的配置实现。
 3. 新建一个页面用于微信授权登录，如：在根目录static文件夹下新建[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth) （所有需要进入SPA应用的url地址都要通过该页面进行跳转，如：微信分享，菜单）
 4. 涉及调用jsapi的页面都得重新配置wx.config
-5. 如果我们要进入 http://example.com/wx/#/home/index 页面，流程图如下：
+5. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
 <img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
 
 #### 目录：
