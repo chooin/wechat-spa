@@ -29,33 +29,33 @@
       return decodeURIComponent(results[2].replace(/\+/g, ' '));
     },
     redirect: function () {
-      var token = window.localStorage.getItem(this.storageName.token);
-      var tokenCreateAt = window.localStorage.getItem(this.storageName.tokenCreateAt);
-      if (token && Date.parse(new Date()) - tokenCreateAt <= this.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
-        window.location.href = this.getParam('redirect_uri') || '/';
+      var token = window.localStorage.getItem(WX.storageName.token);
+      var tokenCreateAt = window.localStorage.getItem(WX.storageName.tokenCreateAt);
+      if (token && Date.parse(new Date()) - tokenCreateAt <= WX.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
+        window.location.href = WX.getParam('redirect_uri') || '/';
       } else { // token不存在或过期，获取token
-        var code = this.getParam('code');
+        var code = WX.getParam('code');
         if (code) { // code存在，去服务端交换token
           axios.get('http://example.com/v1/wechat/token', {
             params: {
               code: code
             }
           }).then(function (res) {
-            window.localStorage.setItem(this.storageName.token, res.data.token);
-            window.localStorage.setItem(this.storageName.tokenCreateAt, Date.parse(new Date()));
-            window.location.href = this.getParam('redirect_uri') || '/';
+            window.localStorage.setItem(WX.storageName.token, res.data.token);
+            window.localStorage.setItem(WX.storageName.tokenCreateAt, Date.parse(new Date()));
+            window.location.href = WX.getParam('redirect_uri') || '/';
           }, function (err) {
             // 调用接口失败可以调用微信的js-sdk的closeWindow方法关闭浏览器窗口
             window.alert('微信授权失败');
           });
         } else { // code不存在，跳转到获取code页面
-          var fullPath = this.getParam('fullPath');
-          if (fullPath) window.localStorage.setItem(this.storageName.fullPath, fullPath);
+          var fullPath = WX.getParam('fullPath');
+          if (fullPath) window.localStorage.setItem(WX.storageName.fullPath, fullPath);
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
-                                 '?appid=' + this.config.appid +
+                                 '?appid=' + WX.config.appid +
                                  '&redirect_uri=' + encodeURIComponent(window.location.href) +
                                  '&response_type=code' +
-                                 '&scope=' + this.config.scope +
+                                 '&scope=' + WX.config.scope +
                                  '&state=' +
                                  '#wechat_redirect';
         }
