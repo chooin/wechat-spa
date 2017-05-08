@@ -98,9 +98,9 @@ cosnt _wechat = () => {
             'onMenuShareAppMessage'
           ]
         })
-        resolve('wechat config success')
+        wx.ready(() => { resolve(wx) }) // 配置wx.config成功
       }, () => {
-        reject('wechat config fail')
+        reject('配置wx.config失败')
       })
     })
   }
@@ -111,22 +111,20 @@ cosnt _wechat = () => {
     let redirect_uri = encodeURIComponent(url.split('#')[0])
     let fullpath = encodeURIComponent(fullPath)
     let link = `http://example.com/static/auth.html?redirect_uri=${redirect_uri}&fullPath=${fullPath}`
-    wx.ready(() => {
-      wx.onMenuShareTimeline({
-        title,
-        link,
-        imgUrl,
-        success () {},
-        cancel () {}
-      })
-      wx.onMenuShareAppMessage({
-        title,
-        desc,
-        link,
-        imgUrl,
-        success () {},
-        cancel () {}
-      })
+    wx.onMenuShareTimeline({
+      title,
+      link,
+      imgUrl,
+      success () {},
+      cancel () {}
+    })
+    wx.onMenuShareAppMessage({
+      title,
+      desc,
+      link,
+      imgUrl,
+      success () {},
+      cancel () {}
     })
   }
 
