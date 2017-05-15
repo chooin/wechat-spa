@@ -3,8 +3,8 @@
 <head>
   <title>微信授权登录</title>
   <meta charset="utf-8">
-  <meta http-equiv="expires" content="-1">
   <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
   <meta http-equiv="pragma" content="no-cache">
   <script src="//cdn.bootcss.com/axios/0.16.1/axios.min.js"></script>
   <script>
@@ -17,7 +17,7 @@
     storageName: {
       token: 'token', // 需要设置的token名称
       tokenCreateAt: '__WX_auth_token_create_at', // token的创建时间
-      fullPath: 'fullPath' //hash后面的部分，如：/home/index
+      fullPath: 'full_path' //hash后面的部分，如：/home/index
     },
     getParam: function (name, url) { // 获取url参数
       if (!url) url = window.location.href;
@@ -32,7 +32,7 @@
       var token = window.localStorage.getItem(WX.storageName.token);
       var tokenCreateAt = window.localStorage.getItem(WX.storageName.tokenCreateAt);
       if (token && Date.parse(new Date()) - tokenCreateAt <= WX.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
-        window.location.href = WX.getParam('redirect_uri') || '/';
+        window.location.replace(WX.getParam('redirect_uri') || '/');
       } else { // token不存在或过期，获取token
         var code = WX.getParam('code');
         if (code) { // code存在，去服务端交换token
@@ -43,13 +43,13 @@
           }).then(function (res) {
             window.localStorage.setItem(WX.storageName.token, res.data.token);
             window.localStorage.setItem(WX.storageName.tokenCreateAt, Date.parse(new Date()));
-            window.location.href = WX.getParam('redirect_uri') || '/';
+            window.location.replace(WX.getParam('redirect_uri') || '/');
           }, function (err) {
             // 调用接口失败可以调用微信的js-sdk的closeWindow方法关闭浏览器窗口
             window.alert('微信授权失败');
           });
         } else { // code不存在，跳转到获取code页面
-          var fullPath = WX.getParam('fullPath');
+          var fullPath = WX.getParam('full_path');
           if (fullPath) window.localStorage.setItem(WX.storageName.fullPath, fullPath);
           window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
                                  '?appid=' + WX.config.appid +
