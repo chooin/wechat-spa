@@ -24,7 +24,7 @@
 - [微信授权登录](#微信授权登录)
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
-- [禁忌](#禁忌)
+- [🚫禁忌](#禁忌)
 
 ## 安装和使用微信js-sdk
 
@@ -114,9 +114,9 @@ cosnt _wechat = () => {
   // 分享配置
   const share = ({ title, desc, fullPath, imgUrl }) => {
     let url = window.location.href
-    let redirect_uri = encodeURIComponent(url.split('#')[0])
+    let redirectUri = encodeURIComponent(url.split('#')[0])
     let fullPath = encodeURIComponent(fullPath)
-    let link = `http://example.com/static/auth.html?redirect_uri=${redirect_uri}&full_path=${fullPath}`
+    let link = `http://example.com/static/auth.html?redirect_uri=${redirectUri}&full_path=${fullPath}`
     wx.onMenuShareTimeline({
       title,
       link,
