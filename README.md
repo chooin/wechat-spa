@@ -75,9 +75,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 
 ## 微信分享
 
-分享的 url 务必是 http://example.com/static/auth.html?redirect_uri={SPA应用部署的地址}&full_path={访问的路由} ，
-
- SPA 应用部署的地址，如：http://example.com/wx/ ；访问的路由，如：/product 或 /product?page=1。两个值都需要通过 encodeURIComponent 转码
+分享的 url 务必是 http://example.com/static/auth.html?redirect_uri={SPA应用部署的地址}&full_path={访问的路由} ，redirect_uri 对应 SPA 应用部署的地址，如：http://example.com/wx/ ；full_path 对应访问的路由，如：/product 或 /product?page=1。两个值都需要通过 encodeURIComponent 转码
 
 参考代码如下：
 
