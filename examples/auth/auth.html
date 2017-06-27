@@ -14,7 +14,7 @@
     dev: { // 开发环境
       wechatAppid: 'wx8de3eqwe11kllk312', // 微信 appid
       url: {
-        spa: 'http://dev.example.com', // 项目所对应的域名（用户判断用户所在的环境）
+        spa: 'http://dev.example.com', // 项目所对应的域名
         api: 'http://api.dev.example.com/v1' // api 地址
       }
     },
@@ -26,7 +26,7 @@
       }
     },
     scope: 'snsapi_base', // 微信应用授权作用域 'snsapi_base' 或 'snsapi_userinfo'
-    expira: 0, // token 过期时间（毫秒），0表示每次进入页面都更新 token
+    expira: 0, // token 过期时间（毫秒），0 表示每次进入页面都更新 token
     storageName: {
       wechatOpenid: 'wechat_openid', // 需要设置的 openid 名称
       token: 'token', // 需要设置的 token 名称
