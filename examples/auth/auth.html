@@ -39,7 +39,9 @@
   // 配置环境
   var env = window.location.origin === envConfig.pro.url.spa ? envConfig.pro : envConfig.dev;
   env = Object.assign(env, {
-    storageName: envConfig.storageName
+    storageName: envConfig.storageName,
+    scope: envConfig.scope,
+    expira: envConfig.expira
   });
 
   // 获取 url 参数
