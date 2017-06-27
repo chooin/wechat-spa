@@ -60,7 +60,7 @@
     window.localStorage.setItem(env.storageName.isReload, false);
     if (token && Date.parse(new Date()) - tokenCreateAt <= env.expira) {
       // token 存在也未过期，跳转到实际需要登录的页面
-      window.location.replace(getParam('redirect_uri') || env.url.spa || '/');
+      window.location.replace(env.url.spa || '/');
     } else {
       // token 不存在或过期，获取 token
       var code = getParam('code');
@@ -73,7 +73,7 @@
         }).then(function (res) {
           window.localStorage.setItem(env.storageName.token, res.data.token);
           window.localStorage.setItem(env.storageName.tokenCreateAt, Date.parse(new Date()));
-          window.location.replace(getParam('redirect_uri') || env.url.spa || '/');
+          window.location.replace(env.url.spa || '/');
         }, function (err) {
           window.WeixinJSBridge.call('closeWindow'); // 微信授权失败
         });
