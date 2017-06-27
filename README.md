@@ -90,7 +90,7 @@ cosnt _wechat = () => {
       // 获取服务端微信配置信息
       axios.get('http://api.example.com/v1/wechat/config', {
         params: {
-          url: window.location.href.indexOf('/cart/payment') > 0 ? window.location.href : window.location.href.split('#')[0]
+          url: window.location.href.split('#')[0]
         }
       }).then(res => {
         wx.config({

@@ -6,63 +6,91 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   <meta http-equiv="pragma" content="no-cache">
-  <script src="//cdn.bootcss.com/axios/0.16.1/axios.min.js"></script>
+  <script src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   <script>
-  var WX = {
-    config: {
-      appid: 'wx8de3eqwe11kllk312', // 微信appid
-      scope: 'snsapi_base', // 微信应用授权作用域'snsapi_base' 或 'snsapi_userinfo'
-      expira: 0 // token过期时间（毫秒），0表示每次进入页面都更新token
+  'use strict';
+  // 环境参数
+  var envConfig = {
+    dev: { // 开发环境
+      wechatAppid: 'wx8de3eqwe11kllk312', // 微信 appid
+      url: {
+        spa: 'http://dev.example.com', // 项目所对应的域名（用户判断用户所在的环境）
+        api: 'http://api.dev.example.com/v1' // api 地址
+      }
     },
+    pro: { // 生产环境
+      wechatAppid: 'wx8de3eqwe11kllk312',
+      url: {
+        spa: 'http://pro.example.com',
+        api: 'http://api.pro.example.com/v1'
+      }
+    },
+    scope: 'snsapi_base', // 微信应用授权作用域 'snsapi_base' 或 'snsapi_userinfo'
+    expira: 0, // token 过期时间（毫秒），0表示每次进入页面都更新 token
     storageName: {
-      token: 'token', // 需要设置的token名称
-      tokenCreateAt: '__WX_auth_token_create_at', // token的创建时间
-      fullPath: 'full_path' //hash后面的部分，如：/home/index
-    },
-    getParam: function (name, url) { // 获取url参数
-      if (!url) url = window.location.href;
-      name = name.replace(/[\[\]]/g, '\\$&');
-      var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-          results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return '';
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    },
-    redirect: function () {
-      var token = window.localStorage.getItem(WX.storageName.token);
-      var tokenCreateAt = window.localStorage.getItem(WX.storageName.tokenCreateAt);
-      if (token && Date.parse(new Date()) - tokenCreateAt <= WX.config.expira) { // token存在也未过期，跳转到实际需要登录的页面
-        window.location.replace(WX.getParam('redirect_uri') || '/');
-      } else { // token不存在或过期，获取token
-        var code = WX.getParam('code');
-        if (code) { // code存在，去服务端交换token
-          axios.get('http://example.com/v1/wechat/token', {
-            params: {
-              code: code
-            }
-          }).then(function (res) {
-            window.localStorage.setItem(WX.storageName.token, res.data.token);
-            window.localStorage.setItem(WX.storageName.tokenCreateAt, Date.parse(new Date()));
-            window.location.replace(WX.getParam('redirect_uri') || '/');
-          }, function (err) {
-            // 调用接口失败可以调用微信的js-sdk的closeWindow方法关闭浏览器窗口
-            window.alert('微信授权失败');
-          });
-        } else { // code不存在，跳转到获取code页面
-          var fullPath = WX.getParam('full_path');
-          if (fullPath) window.localStorage.setItem(WX.storageName.fullPath, fullPath);
-          window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
-                                 '?appid=' + WX.config.appid +
-                                 '&redirect_uri=' + encodeURIComponent(window.location.href) +
-                                 '&response_type=code' +
-                                 '&scope=' + WX.config.scope +
-                                 '&state=' +
-                                 '#wechat_redirect';
-        }
+      wechatOpenid: 'wechat_openid', // 需要设置的 openid 名称
+      token: 'token', // 需要设置的 token 名称
+      tokenCreateAt: 'token_create_at', // token 的创建时间
+      fullPath: 'full_path', // hash 后面的部分，如：/home/index
+      isReload: 'is_reload' // 用于强制刷新 spa 缓存
+    }
+  };
+
+  // 配置环境
+  var env = window.location.origin === envConfig.pro.url.spa ? envConfig.pro : envConfig.dev;
+  env = Object.assign(env, {
+    storageName: envConfig.storageName
+  });
+
+  // 获取 url 参数
+  function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
+
+  // 授权，完成后重定向到项目
+  (function () {
+    var token = window.localStorage.getItem(env.storageName.token);
+    var tokenCreateAt = window.localStorage.getItem(env.storageName.tokenCreateAt);
+    window.localStorage.setItem(env.storageName.isReload, false);
+    if (token && Date.parse(new Date()) - tokenCreateAt <= env.expira) {
+      // token 存在也未过期，跳转到实际需要登录的页面
+      window.location.replace(getParam('redirect_uri') || env.url.spa || '/');
+    } else {
+      // token 不存在或过期，获取 token
+      var code = getParam('code');
+      if (code) {
+        // code 存在，去服务端交换 token
+        axios.get(env.url.api + '/wechat/token', {
+          params: {
+            code: code
+          }
+        }).then(function (res) {
+          window.localStorage.setItem(env.storageName.token, res.data.token);
+          window.localStorage.setItem(env.storageName.tokenCreateAt, Date.parse(new Date()));
+          window.location.replace(getParam('redirect_uri') || env.url.spa || '/');
+        }, function (err) {
+          window.WeixinJSBridge.call('closeWindow'); // 微信授权失败
+        });
+      } else {
+        // code 不存在，跳转到获取 code 页面
+        var fullPath = getParam('full_path');
+        if (fullPath) window.localStorage.setItem(env.storageName.fullPath, fullPath);
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize' +
+                               '?appid=' + env.wechatAppid +
+                               '&redirect_uri=' + encodeURIComponent(window.location.href) +
+                               '&response_type=code' +
+                               '&scope=' + env.scope +
+                               '&state=' +
+                               '#wechat_redirect';
       }
     }
-  }
-  WX.redirect();
+  })();
   </script>
 </head>
 </html>
