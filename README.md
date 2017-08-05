@@ -52,7 +52,7 @@ import wx from 'weixin-js-sdk'
 
 在切换页面路由之后需在 body 里面添加 iframe，随后移除掉 iframe 即可，代码如下
 
-```
+``` js
 // iPhone，iPod，iPad下无法更新标题
 if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
   let iframe = document.createElement('iframe')
@@ -79,7 +79,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 
 参考代码如下：
 
-```
+``` js
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
 
