@@ -12,6 +12,9 @@
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="pragma" content="no-cache">
+
+# Nginx，防止 window.location.href 跳转页面被缓存
+add_header "Cache-Control" "no-cache, private";
 ```
 6. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
 <img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
