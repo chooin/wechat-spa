@@ -8,15 +8,16 @@
 4. 涉及调用 jsapi 的页面都得重新配置 wx.config
 5. 不要缓存 SPA 应用入口页面，给入口页面的 head 部分添加以下代码
 ``` html
-# 防止页面缓存
+<!-- 防止页面缓存 -->
 <meta http-equiv="cache-control" content="no-cache">
 <meta http-equiv="expires" content="0">
 <meta http-equiv="pragma" content="no-cache">
-
-# Nginx，防止 window.location.href 跳转页面被缓存
+```
+6. Nginx，防止 window.location.href 跳转页面被缓存
+``` sh
 add_header "Cache-Control" "no-cache, private";
 ```
-6. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
+7. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
 <img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
 
 #### 目录：
