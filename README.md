@@ -13,7 +13,7 @@
 <meta http-equiv="expires" content="0">
 <meta http-equiv="pragma" content="no-cache">
 ```
-6. Nginx，防止 window.location.href 跳转页面被缓存
+6. Nginx，防止使用 `window.location.href` 进行页面跳转被浏览器缓存
 ``` sh
 add_header "Cache-Control" "no-cache, private";
 ```
