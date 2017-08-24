@@ -31,8 +31,7 @@
       wechatOpenid: 'wechat_openid', // 需要设置的 openid 名称
       token: 'token', // 需要设置的 token 名称
       tokenCreateAt: 'token_create_at', // token 的创建时间
-      fullPath: 'full_path', // hash 后面的部分，如：/home/index
-      isReload: 'is_reload' // 用于强制刷新 spa 缓存
+      fullPath: 'full_path' // hash 后面的部分，如：/home/index
     }
   };
 
@@ -59,7 +58,6 @@
   (function () {
     var token = window.localStorage.getItem(env.storageName.token);
     var tokenCreateAt = window.localStorage.getItem(env.storageName.tokenCreateAt);
-    window.localStorage.setItem(env.storageName.isReload, false);
     if (token && Date.parse(new Date()) - tokenCreateAt <= env.expira) {
       // token 存在也未过期，跳转到实际需要登录的页面
       window.location.replace(env.url.spa || '/');
