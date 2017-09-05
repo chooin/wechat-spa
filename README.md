@@ -87,7 +87,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
 
-cosnt _wechat = () => {
+const _wechat = () => {
   // wx.config配置
   const config = () => {
     return new Promise((resolve, reject) => {
