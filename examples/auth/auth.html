@@ -49,7 +49,7 @@
   for (var i = 0; i < envConfig.env.length; i++) {
     if (window.location.origin === envConfig.env[i].url.spa) {
       env.url = envConfig.env[i].url;
-      env.wechatAppid = envConfig.env[i].wechatOpenid;
+      env.wechatAppid = envConfig.env[i].wechatAppid;
       break;
     }
   }
