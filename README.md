@@ -23,7 +23,6 @@ add_header "Cache-Control" "no-cache, private";
 #### 目录：
 
 - [安装和使用微信 js-sdk](#安装和使用微信js-sdk)
-- [配置](#配置)
 - [标题更新](#标题更新)
 - [微信授权登录](#微信授权登录)
 - [微信分享](#微信分享)
@@ -46,12 +45,6 @@ import wx from 'weixin-js-sdk'
 ```
 
 注：也可以通过修改 webpack 配置解决，具体请自行查资料。
-
-## 配置
-
-非支付页面使用 window.location.href.split('#')[0]，支付页面使用 window.location.href，将得到的 url 传递给服务端进行签名操作
-
-参考：[微信分享](#微信分享)
 
 ## 标题更新
 
@@ -88,7 +81,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 import wx from 'weixin-js-sdk'
 import axios from 'axios'
 
-const _wechat = () => {
+const $_wechat = () => {
   // wx.config配置
   const config = () => {
     return new Promise((resolve, reject) => {
@@ -146,9 +139,9 @@ const _wechat = () => {
 }
 
 // 调用分享
-_wechat().config().then(res => {
+$_wechat().config().then(res => {
   // 配置分享
-  _wechat().share({
+  $_wechat().share({
     title: 'wechat-spa',
     desc: 'Wechat SPA',
     fullPath: '/home/index',
@@ -174,7 +167,7 @@ _wechat().config().then(res => {
 ```
 setTimeout(() => {
   window.location.href = ''
-}, 500);
+}, 500)
 ```
 
 注：微信内置浏览器的 bug
