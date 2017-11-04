@@ -28,6 +28,7 @@ add_header "Cache-Control" "no-cache, private";
 - [微信授权登录](#微信授权登录)
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
+- [白屏（微信支付后跳转到其他页面）](#白屏（微信支付后跳转到其他页面）)
 - [禁忌](#禁忌) ❗❗❗
 
 ## 安装和使用微信js-sdk
@@ -165,6 +166,18 @@ _wechat().config().then(res => {
 **如：** 我们进入 SPA 应用的第一个页面是 http://example.com/wx/#/home/index 或是 http://example.com/wx/#/me/index ，则 iOS 获取到的安全目录路径分别是 http://example.com/wx/#/home/index 、 http://example.com/wx/#/me/index 。这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入 SPA 应用的页面是行不通的。
 
 **解决思路：** 我们进入 SPA 应用的第一个页面都是 http://example.com/wx/ 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面。
+
+## 白屏（微信支付后跳转到其他页面）
+
+微信支付完成后跳转到其他页面有一定几率出现白屏（页面无法渲染，长按屏幕可以复制出文字或图片地址），解决方案：
+
+```
+setTimeout(() => {
+  window.location.href = ''
+}, 500);
+```
+
+注：微信内置浏览器的 bug
 
 ## 禁忌
 1. 不要使用类似以下格式的 url
