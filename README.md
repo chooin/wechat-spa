@@ -180,13 +180,8 @@ setTimeout(() => {
 注：微信内置浏览器的 bug
 
 ## 禁忌
-1. 不要使用类似以下格式的 url
-``` sh
-# 不要将 #/home/index 放置在 “?” 后面，原因：点击返回到上个页面，可能会出现页面无法渲染
-http://example.com/?time=1494315429992#/home/index
-```
 
-2. 路由不要使用 history 模式
+1. 路由不要使用 history 模式
 
 ## 问题反馈
 
