@@ -164,9 +164,11 @@ $_wechat().config().then(res => {
 
 微信支付后立即跳转到其他页面有一定几率出现白屏（长按屏幕可以复制出文字或图片地址），解决方案：
 
-```
+``` js
+// 延迟跳转即可解决
 setTimeout(() => {
-  window.location.href = ''
+  // 跳转逻辑，如：
+  window.location.replace('/pay/success')
 }, 500)
 ```
 
