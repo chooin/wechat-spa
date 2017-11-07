@@ -102,7 +102,9 @@ const $_wechat = () => {
             'onMenuShareAppMessage'
           ]
         })
-        wx.ready(() => { resolve(wx) }) // 配置wx.config成功
+        wx.ready(() => { // 配置wx.config成功
+          resolve(wx)
+        })
       }, () => {
         reject('配置wx.config失败')
       })
@@ -110,11 +112,15 @@ const $_wechat = () => {
   }
 
   // 分享配置
-  const share = ({ title, desc, fullPath, imgUrl }) => {
-    let url = window.location.href
-    let redirectUri = encodeURIComponent(url.split('#')[0])
-    let fullPath = encodeURIComponent(fullPath)
-    let link = `http://example.com/static/auth.html?redirect_uri=${redirectUri}&full_path=${fullPath}`
+  const share = ({
+    title,
+    desc,
+    fullPath,
+    imgUrl
+  }) => {
+    let link = `http://example.com/static/auth.html` +
+               `?redirect_uri=${encodeURIComponent(window.location.href.split('#')[0])}` +
+               `&full_path=${encodeURIComponent(fullPath)}`
     wx.onMenuShareTimeline({
       title,
       link,
@@ -140,8 +146,7 @@ const $_wechat = () => {
 
 // 调用分享
 $_wechat().config().then(res => {
-  // 配置分享
-  $_wechat().share({
+  $_wechat().share({ // 配置分享
     title: 'wechat-spa',
     desc: 'Wechat SPA',
     fullPath: '/home/index',
@@ -156,7 +161,15 @@ $_wechat().config().then(res => {
 
 造成支付失败的原因：iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 url。
 
-**如：** 我们进入 SPA 应用的第一个页面是 http://example.com/wx/#/home/index 或是 http://example.com/wx/#/me/index ，则 iOS 获取到的安全目录路径分别是 http://example.com/wx/#/home/index 、 http://example.com/wx/#/me/index 。这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入 SPA 应用的页面是行不通的。
+**举个例子：** 
+
+第一次进入的 URL | iOS 获取到的安全目录
+--------- | --------
+http://example.com/wx/#/home/index | http://example.com/wx/#/home/index
+http://example.com/wx/#/me/index | http://example.com/wx/#/me/index
+http://example.com/wx/#/product/index | http://example.com/wx/#/product/index
+
+这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入 SPA 应用的页面是行不通的
 
 **解决思路：** 我们进入 SPA 应用的第一个页面都是 http://example.com/wx/ 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面。
 
