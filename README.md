@@ -25,19 +25,25 @@ add_header "Cache-Control" "no-cache, private";
 
 ## 安装和使用微信js-sdk
 
-1. npm 安装
+1. 方法一
+
+安装
 
 ``` sh
 npm install weixin-js-sdk --save
+# or
+yarn add weixin-js-sdk
 ```
 
-2. ES6 使用
+使用
 
-``` sh
+``` js
 import wx from 'weixin-js-sdk'
 ```
 
-注：也可以通过修改 webpack 配置解决，具体请自行查资料。
+2. 方法二
+
+在入口 html 文件引入微信的 js-sdk 文件，webpack 配置参考：http://webpack.github.io/docs/library-and-externals.html
 
 ## 标题更新
 
@@ -47,7 +53,6 @@ import wx from 'weixin-js-sdk'
 // iPhone，iPod，iPad下无法更新标题
 if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
   let iframe = document.createElement('iframe')
-  let body = document.querySelector('body')
   iframe.style.display = 'none'
   iframe.src = '/favicon.ico'
   iframe.onload = () => {
@@ -55,7 +60,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
       iframe.remove()
     }, 10)
   }
-  body.appendChild(iframe)
+  document.body.appendChild(iframe)
 }
 ```
 
