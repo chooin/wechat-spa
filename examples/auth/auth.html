@@ -70,7 +70,7 @@
     var token = window.localStorage.getItem(env.storageName.token);
     var tokenCreateAt = window.localStorage.getItem(env.storageName.tokenCreateAt);
     if (token && new Date().getTime() - tokenCreateAt <= env.expira) { // token 存在也未过期，跳转到实际需要登录的页面
-      window.location.href = env.url.spa || '/';
+      window.location.replace(env.url.spa || '/');
     } else { // token 不存在或过期，获取 token
       var code = getParam('code');
       if (code) { // code 存在，去服务端交换 token
@@ -81,7 +81,7 @@
         }).then(function (res) {
           window.localStorage.setItem(env.storageName.token, res.data.token);
           window.localStorage.setItem(env.storageName.tokenCreateAt, new Date().getTime());
-          window.location.href = env.url.spa || '/';
+          window.location.replace(env.url.spa || '/');
         }, function (err) {
           window.WeixinJSBridge.call('closeWindow'); // 微信授权失败
         });
