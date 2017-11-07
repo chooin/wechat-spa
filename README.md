@@ -14,7 +14,7 @@
 <meta http-equiv="pragma" content="no-cache">
 ```
 6. Nginx，防止使用 `window.location.href` 进行页面跳转被浏览器缓存
-``` sh
+``` conf
 add_header "Cache-Control" "no-cache, private";
 ```
 7. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
@@ -159,9 +159,7 @@ $_wechat().config().then(res => {
 
 ## 微信支付
 
-造成支付失败的原因：iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 url。
-
-**举个例子：** 
+造成支付失败的原因：iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 url，举个例子：
 
 第一次进入的 URL | iOS 获取到的安全目录
 --------- | --------
@@ -180,8 +178,7 @@ http://example.com/wx/#/product/index | http://example.com/wx/#/product/index
 ``` js
 // 延迟跳转即可解决
 setTimeout(() => {
-  // 跳转逻辑，如：
-  window.location.replace('/pay/success')
+  window.location.replace('/pay/success') // 跳转逻辑
 }, 500)
 ```
 
