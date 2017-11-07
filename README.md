@@ -6,18 +6,11 @@
 2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改 Nginx、Apache 配置重写 url 实现，或者修改 webpack 的配置实现
 3. 新建一个页面用于微信授权登录，如：在根目录 static 文件夹下新建 [auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)（所有需要进入 SPA 应用的 url 地址都要通过该页面进行跳转，如：微信分享，菜单）
 4. 涉及调用 jsapi 的页面都得重新配置 wx.config
-5. 不要缓存 SPA 应用入口页面，给入口页面的 head 部分添加以下代码
-``` html
-<!-- 防止页面缓存 -->
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="expires" content="0">
-<meta http-equiv="pragma" content="no-cache">
-```
-6. Nginx，防止使用 `window.location.href` 进行页面跳转被浏览器缓存
+5. Nginx，防止使用 `window.location.href` 进行页面跳转被浏览器缓存
 ``` conf
 add_header "Cache-Control" "no-cache, private";
 ```
-7. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
+6. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
 <img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
 
 #### 目录：
