@@ -7,11 +7,10 @@
 3. 新建一个页面用于微信授权登录，如：在根目录 static 文件夹下新建 [auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)（所有需要进入 SPA 应用的 url 地址都要通过该页面进行跳转，如：微信分享，菜单）
 4. 涉及调用 jsapi 的页面都得重新配置 wx.config
 5. Nginx，防止使用 `window.location.href` 进行页面跳转被浏览器缓存
-6. 
 ``` conf
 add_header "Cache-Control" "no-cache, private";
 ```
-7. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
+6. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
 <img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
 
 #### 目录：
