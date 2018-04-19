@@ -3,10 +3,11 @@
 #### 🌈 这事非常重要：
 
 1. 路由启用 hash 模式，hash 务必是 “#”，如：http://example.com/wx/#/home/index
-2. 涉及**微信支付**的应用部署目录务必是二级或三级，建议通过修改 Nginx、Apache 配置重写 url 实现，或者修改 webpack 的配置实现
+2. 页面路由建议设置成两层，如：http://example.com/wx/#/home/index，参数请用 `?` 的形式获取，如：http://example.com/wx/#/home/index?search=content
 3. 新建一个页面用于微信授权登录，如：在根目录 static 文件夹下新建 [auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)（所有需要进入 SPA 应用的 url 地址都要通过该页面进行跳转，如：微信分享，菜单）
 4. 涉及调用 jsapi 的页面都得重新配置 wx.config
 5. Nginx，防止使用 `window.location.href` 进行页面跳转被浏览器缓存
+6. 
 ``` conf
 add_header "Cache-Control" "no-cache, private";
 ```
@@ -168,8 +169,6 @@ http://example.com/wx/#/product/index | http://example.com/wx/#/product/index
 这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入 SPA 应用的页面是行不通的
 
 **解决思路：** 我们进入 SPA 应用的第一个页面都是 http://example.com/wx/ 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面。
-
-**注意：** 支付页面路由建议设置成两层，如：/payment/index，有其他参数请用 `?` 的形式获取，如：/payment/index?search=content。
 
 ## 白屏
 
