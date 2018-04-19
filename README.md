@@ -169,6 +169,8 @@ http://example.com/wx/#/product/index | http://example.com/wx/#/product/index
 
 **解决思路：** 我们进入 SPA 应用的第一个页面都是 http://example.com/wx/ 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面。
 
+**注意：** 支付页面路由建议设置成两层，如：/payment/index，有其他参数请用 `?` 的形式获取，如：/payment/index?search=content。
+
 ## 白屏
 
 微信支付后立即跳转到其他页面有一定几率出现白屏（长按屏幕可以复制出文字或图片地址），解决方案：
@@ -176,7 +178,7 @@ http://example.com/wx/#/product/index | http://example.com/wx/#/product/index
 ``` js
 // 延迟跳转即可解决
 setTimeout(() => {
-  window.location.replace('/pay/success') // 跳转逻辑
+  window.location.replace('/payment/success') // 跳转逻辑
 }, 500)
 ```
 
