@@ -11,7 +11,7 @@
 ``` conf
 add_header "Cache-Control" "no-cache, private";
 ```
-6. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
+7. 从分享链接或微信公众号菜单进入 http://example.com/wx/#/home/index 页面，流程图如下：
 <img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
 
 #### 目录：
