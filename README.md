@@ -37,7 +37,7 @@ add_header "Cache-Control" "no-cache, private";
 
 ## 微信授权流程图：
 
-![IMG](./UML)
+<img src="https://github.com/Chooin/wechat-spa/blob/develop/UML.png" width="780" height="auto" />
 
 ## 安装和使用微信JS-SDK
 
