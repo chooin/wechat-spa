@@ -1,8 +1,8 @@
 # 微信端单页面应用（SPA）常见问题汇总及解决方案
 
-- [非常重要](#非常重要) 👈👈👈
+- [非常重要](#非常重要) 🌈🌈🌈
 - [微信授权流程图](#微信授权流程图)
-- [安装和使用微信 js-sdk](#安装和使用微信js-sdk)
+- [安装和使用微信 JS-SDK](#安装和使用微信JS-SDK)
 - [标题更新](#标题更新)
 - [微信授权登录](#微信授权登录)
 - [微信分享](#微信分享)
@@ -11,17 +11,17 @@
 
 ## 非常重要：
 
-路由启用 hash 模式，hash 务必是 `#`，如：https://example.com/#/home/index
+路由启用 hash 模式，hash 务必是 `#`，如：`https://example.com/#/home/index`
 
-> 采用 history 模式将无法复制出当前的 URL
+> 采用 history 模式，页面路由改变后无法复制改变后的 URL 地址
 
-参数请用 `?` 的形式获取，如：https://example.com/#/product/index?id=1
+参数使用 `?` 的形式获取，如：`https://example.com/#/product/detail?id=1`
 
-> 不采用 `?` 的形式获取参数会产生很多支付安全目录
+> 不采用 `?` 的形式获取参数则需要配置很多支付安全目录
 
 新建一个页面用于微信授权登录，如：在根目录 static 文件夹下新建 [auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
-> 解决很多支付安全目录的问题
+> 解决需要配置很多支付安全目录的问题
 
 Nginx 配置
 
@@ -31,19 +31,19 @@ add_header "Cache-Control" "no-cache, private";
 
 > 解决 window.location.href 跳转页面被浏览器缓存的问题
 
-涉及调用 jsapi 的页面都得重新配置 wx.config
+涉及调用 JS-SDK 的页面都得重新配置 wx.config()
 
 > 你懂的～
 
 ## 微信授权流程图：
 
-<img src="https://github.com/Chooin/wechat-spa/blob/master/pictures/flow.png" width="780" height="auto" />
+![IMG](./UML)
 
-## 安装和使用微信js-sdk
+## 安装和使用微信JS-SDK
 
 ### 方法 1 (推荐)
 
-在入口 index.html 文件引入微信的 js-sdk 文件，webpack 配置参考：[中文](https://webpack.docschina.org/configuration/externals/) / [English](https://webpack.js.org/configuration/externals/)
+在入口 index.html 文件引入微信的 JS-SDK 文件，webpack 配置参考：[中文](https://webpack.docschina.org/configuration/externals/) / [English](https://webpack.js.org/configuration/externals/)
 
 index.html
 
@@ -65,7 +65,7 @@ externals: {
 import wx from 'wx'
 
 wx.ready(() => {
-  console.log('hello Wechat!')
+  console.log('Hello Wechat!')
 })
 ```
 
@@ -117,8 +117,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 ## 微信分享
 1. 分享配置都正确，进入链接后页面显示不对
 
-**解决方案：**在分享的地址后面添加一个随机字符串，如：`/product/index?share_at=${Date.now()}`
-
+**解决方案：**在分享的地址后面添加一个随机字符串，如：`https://example.com/#/product/detail?id=1&share_at=${Date.now()}`
 
 **微信分享参考代码：**
 
@@ -195,7 +194,7 @@ $_wechat().then(res => {
 
 ## 微信支付
 
-1. 安全目录问题，iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 URL，举个例子：
+1. 支付安全目录，iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 URL
 
 第一次进入的 URL | iOS 获取到的安全目录
 --------- | --------
@@ -205,7 +204,7 @@ https://example.com/#/product/index | https://example.com/#/product/index
 
 这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入 SPA 应用的页面是行不通的
 
-**解决思路：** 我们进入 SPA 应用的第一个页面都是 https://example.com/ 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面。
+**解决思路：** 我们进入 SPA 应用的第一个页面都是 `https://example.com/` 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面。
 
 ## 白屏
 

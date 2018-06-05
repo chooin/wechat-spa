@@ -1,0 +1,23 @@
+title 微信授权时序图
+
+用户 -> 菜单/分享 URL : 进入微信打开 URL
+菜单/分享 URL -> 单页面（SPA）: 进入项目
+alt sessionStorage 中不存在 is_auth
+    单页面（SPA）-> 单页面（SPA）: 存储 URL “#” 后面的路径到 localStorage
+    单页面（SPA） -> auth.html : 跳转到
+    alt localStorage 中存在 wechat_openid
+        alt 不存在 token 或 token 过期
+            auth.html -> 后端服务 : 提交 wechat_openid
+            后端服务 --> auth.html : 有 token，则将 token 存储到 localStorage
+        end
+    else localStorage 中不存在 wechat_openid
+        auth.html -> 微信 OAuth2.0 : 跳转到
+        微信 OAuth2.0 -> auth.html : 返回 code
+        auth.html -> 后端服务 : 提交 code
+        后端服务 --> auth.html : 返回 wechat_openid、token 等信息，存储到 localStorage
+    end
+    auth.html -> auth.html : 设置 is_auth 等于 Date.now()，存储到 sessionStorage
+    auth.html -> 单页面（SPA）: 跳转到根路径
+    单页面（SPA）-> 单页面（SPA）: localStorage 中获取 “#” 后面的路径，再通过路由勾子跳转到实际要访问的地址
+end
+单页面（SPA）-> 用户 : 展示信息
