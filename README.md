@@ -1,6 +1,6 @@
 # 微信端单页面应用（SPA）常见问题汇总及解决方案
 
-- [**非常重要**](#非常重要) 🌈🌈🌈
+- [非常重要](#非常重要) 👈👈👈
 - [微信授权流程图](#微信授权流程图)
 - [安装和使用微信 js-sdk](#安装和使用微信js-sdk)
 - [标题更新](#标题更新)
@@ -8,21 +8,20 @@
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
 - [白屏](#白屏)
-- [禁忌](#禁忌) ❗❗❗
 
 ## 非常重要：
 
 路由启用 hash 模式，hash 务必是 `#`，如：https://example.com/#/home/index
 
-> **原因：** 采用 history 模式将无法复制出当前的 URL
+> 采用 history 模式将无法复制出当前的 URL
 
 参数请用 `?` 的形式获取，如：https://example.com/#/product/index?id=1
 
-> **原因：** 不采用 `?` 的形式获取参数会产生很多支付安全目录
+> 不采用 `?` 的形式获取参数会产生很多支付安全目录
 
 新建一个页面用于微信授权登录，如：在根目录 static 文件夹下新建 [auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
-> **原因：** 解决很多支付安全目录的问题
+> 解决很多支付安全目录的问题
 
 Nginx 配置
 
@@ -30,11 +29,11 @@ Nginx 配置
 add_header "Cache-Control" "no-cache, private";
 ```
 
-> **原因：** 解决 window.location.href 跳转页面被浏览器缓存的问题
+> 解决 window.location.href 跳转页面被浏览器缓存的问题
 
 涉及调用 jsapi 的页面都得重新配置 wx.config
 
-> **原因：** 你懂的～
+> 你懂的～
 
 ## 微信授权流程图：
 
@@ -116,13 +115,12 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 授权登录页面参考：[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
-<details>
-<summary>**问题：**分享配置都正确，进入链接后页面显示不对</summary>**原因：** 微信缓存了当前页面
+1. 分享配置都正确，进入链接后页面显示不对
 
-**方案：**在分享的地址后面添加一个随机字符串，如：`/product/index?share_at=${Date.now()}`
-</details>
+**解决方案：**在分享的地址后面添加一个随机字符串，如：`/product/index?share_at=${Date.now()}`
 
-##### 微信分享参考代码：
+
+**微信分享参考代码：**
 
 ```js
 import wx from 'wx'
@@ -170,14 +168,14 @@ const $_wechat = () => {
           'onMenuShareAppMessage'
         ]
       })
-      wx.ready(() => { // 配置wx.config成功
+      wx.ready(() => { // 配置 wx.config 成功
         resolve({
           wx,
           share
         })
       })
     }).catch(() => {
-      reject('配置wx.config失败')
+      reject(new Error('微信签名接口异常'))
     })
   }
 }
@@ -190,12 +188,14 @@ $_wechat().then(res => {
     fullPath: '/home/index',
     imgUrl: 'https://www.baidu.com/img/bd_logo1.png'
   })
-}).catch(_ => console.warn(_))
+}).catch(_ => {
+  console.warn(_.message)
+})
 ```
 
 ## 微信支付
 
-造成支付失败的原因：iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 url，举个例子：
+1. 安全目录问题，iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 URL，举个例子：
 
 第一次进入的 URL | iOS 获取到的安全目录
 --------- | --------
