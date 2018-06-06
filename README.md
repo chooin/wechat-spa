@@ -110,7 +110,7 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
 ## 微信分享
 1. 分享配置都正确，进入链接后页面显示不对
 
-**解决方案：**在分享的地址后面添加一个随机字符串，如：`https://example.com/#/product/detail?id=1&share_at=${Date.now()}`
+**解决方案：** 在分享的地址后面添加一个随机字符串，如：`https://example.com/#/product/detail?id=1&share_at=${Date.now()}`
 
 **微信分享参考代码：**
 
