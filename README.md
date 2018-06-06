@@ -12,15 +12,15 @@
 
 路由启用 hash 模式，hash 务必是 `#`，如：`https://example.com/#/home/index`
 
-> 采用 history 模式，页面路由改变后无法复制改变后的 URL 地址
+> 采用 history 模式，页面路由改变后无法复制出改变后的 URL 地址
 
 参数使用 `?` 的形式获取，如：`https://example.com/#/product/detail?id=1`
 
 > 不采用 `?` 的形式获取参数则需要配置很多支付安全目录
 
-新建一个页面用于微信授权登录，如：在根目录 static 文件夹下新建 [auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
+新建一个页面用于获取 wechat_openid、token 等操作，所有第一次进入 SPA 项目后的用户都需要跳转到 auth.html 页面，如：在根目录 static 文件夹下新建 auth.html，[微信授权流程图](#微信授权流程图)
 
-> 解决需要配置很多支付安全目录的问题
+> 解决需要配置很多支付安全目录的问题（网上很多资料都说在支付页面添加 `?`，如：`https://example.com/?#/payment/index?order_id=1`，这样会使得路由搞的很混乱，我不建议你采用添加 `?` 的形式去解决支付问题）
 
 Nginx 配置
 
