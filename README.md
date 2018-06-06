@@ -2,7 +2,7 @@
 
 - [非常重要](#非常重要) 🌈🌈🌈
 - [微信授权流程图](#微信授权流程图)
-- [安装和使用微信JS-SDK](#安装和使用微信JS-SDK)
+- [安装和使用微信 JS-SDK](#安装和使用微信-js-sdk)
 - [标题更新](#标题更新)
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
@@ -38,7 +38,7 @@ add_header "Cache-Control" "no-cache, private";
 
 <img src="https://github.com/Chooin/wechat-spa/blob/develop/UML.png" width="880" height="auto" />
 
-## 安装和使用微信JS-SDK
+## 安装和使用微信 JS-SDK
 
 ### 方法 1 (推荐)
 
