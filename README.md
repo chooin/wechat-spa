@@ -171,7 +171,7 @@ const $_wechat = () => {
     }).catch(() => {
       reject(new Error('微信签名接口异常'))
     })
-  }
+  })
 }
 
 // 调用分享
