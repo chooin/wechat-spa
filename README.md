@@ -2,7 +2,7 @@
 
 - [非常重要](#非常重要) 🌈🌈🌈
 - [微信授权流程图](#微信授权流程图)
-- [安装和使用微信 JS-SDK](#安装和使用微信JS-SDK)
+- [安装和使用微信 JS-SDK](#安装和使用微信 JS-SDK)
 - [标题更新](#标题更新)
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
@@ -18,9 +18,9 @@
 
 > 不采用 `?` 的形式获取参数则需要配置很多支付安全目录
 
-新建一个页面用于获取 wechat_openid、token 等操作，所有第一次进入 SPA 项目后的用户都需要跳转到 auth.html 页面，如：在根目录 static 文件夹下新建 auth.html，[微信授权流程图](#微信授权流程图)
+新建一个页面用于获取 wechat_openid、token 等操作，用户第一次进入 SPA 项目后的都需要跳转到 auth.html 页面，如：在根目录 static 文件夹下新建 auth.html，[微信授权流程图](#微信授权流程图)
 
-> 解决需要配置很多支付安全目录的问题（网上很多资料都说在支付页面添加 `?`，如：`https://example.com/?#/payment/index?order_id=1`，这样会使得路由搞的很混乱，我不建议你采用添加 `?` 的形式去解决支付问题）
+> 解决需要配置很多支付安全目录的问题（网上很多资料都说在支付页面添加 `?`，如：`https://example.com/?#/payment/index?order_id=1`，这样会使路由很混乱，我不建议你采用添加 `?` 的形式去解决支付问题）
 
 Nginx 配置
 
@@ -38,7 +38,7 @@ add_header "Cache-Control" "no-cache, private";
 
 <img src="https://github.com/Chooin/wechat-spa/blob/develop/UML.png" width="880" height="auto" />
 
-## 安装和使用微信JS-SDK
+## 安装和使用微信 JS-SDK
 
 ### 方法 1 (推荐)
 
