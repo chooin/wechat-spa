@@ -38,7 +38,7 @@ add_header "Cache-Control" "no-cache, private";
 
 <img src="https://github.com/Chooin/wechat-spa/blob/master/UML.png" width="880" height="auto" />
 
-> is_auth 的作用：告诉系统当前系统已经经过 auth.html 页面跳转
+> is_auth：is_auth 存在说明已经经过 auth.html 页面跳转
 
 ## 安装和使用微信 JS-SDK
 
@@ -199,7 +199,7 @@ https://example.com/#/product/index | https://example.com/#/product/index
 
 这样我们要配置很多的安全目录路径，但微信平台仅允许设置3个安全目录路径，直接进入 SPA 应用的页面是行不通的
 
-**解决思路：** 我们进入 SPA 应用的第一个页面都是 `https://example.com/` 然后通过 SPA 应用路由钩子重定向到自己想要访问的页面，[微信授权时序图](#微信授权时序图)
+**解决思路：** 用户都得先进入 SPA 应用的根目录 `https://example.com/`，然后通过 SPA 应用路由提供的钩子重定向到自己想要访问的页面，[微信授权时序图](#微信授权时序图)
 
 ## 白屏
 
