@@ -36,7 +36,7 @@ add_header "Cache-Control" "no-cache, private";
 
 ## 微信授权时序图：
 
-<img src="https://github.com/Chooin/wechat-spa/blob/develop/UML.png" width="880" height="auto" />
+<img src="https://github.com/Chooin/wechat-spa/blob/master/UML.png" width="880" height="auto" />
 
 > is_auth 的作用：告诉系统当前系统已经经过 auth.html 页面跳转
 
