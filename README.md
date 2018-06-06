@@ -4,7 +4,6 @@
 - [微信授权流程图](#微信授权流程图)
 - [安装和使用微信 JS-SDK](#安装和使用微信JS-SDK)
 - [标题更新](#标题更新)
-- [微信授权登录](#微信授权登录)
 - [微信分享](#微信分享)
 - [微信支付](#微信支付)
 - [白屏](#白屏)
@@ -107,12 +106,6 @@ if (/ip(hone|od|ad)/i.test(window.navigator.userAgent)) {
   document.body.appendChild(iframe)
 }
 ```
-
-## 微信授权登录
-
-通过微信菜单或微信分享访问 SPA 应用需先访问授权登录页面(如先访问：https://example.com/static/auth.html )，在授权登录页面设置 token 等信息后再跳回到 index.html 文件所在的根目录下(如：https://example.com/wx/ )，然后利用 SPA 应用路由的钩子跳转到实际要访问的地址。
-
-授权登录页面参考：[auth.html](https://github.com/Chooin/wechat-spa/blob/master/examples/auth)
 
 ## 微信分享
 1. 分享配置都正确，进入链接后页面显示不对
