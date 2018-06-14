@@ -187,6 +187,33 @@ $_wechat().then(res => {
 })
 ```
 
+2 微信分享配置正确，自定义分享无效
+#####自定义分享到微信好友(分享到朋友圈、qq同理) ，部分源码如下：
+``` 
+const url = `${window.location.origin}${window.location.pathname}/#/ad?share_at=${Date.now()}&wechatID=${this.wechatID}`;
+const shareInfo = {
+    title: '送你600元卡友vip', // 分享标题
+    desc: '免费领取，周周抽iphoneX等，月月免费领豪礼！', // 分享描述
+    link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+    success: () => {
+        this.recordShare();
+        this.earnPoints();
+    },
+};
+window.wx.onMenuShareAppMessage(shareInfo);
+``` 
+圈重点：
+
+分享链接1:const url = `${window.location.origin}${window.location.pathname}/#/ad?share_at=${Date.now()}&wechatID=${this.wechatID}&utm_source=分享`;
+
+分享链接2const url = `${window.location.origin}${window.location.pathname}/#/ad?share_at=${Date.now()}&wechatID=${this.wechatID}`;
+
+当配置的链接为 分享链接1 时，会直接导致自定义分享失效，实际分享出来的链接为当前所在页面的url，title为公众号名称。。。此时你就入坑了
+
+当配置的链接为 分享链接2 时，自定义分享成功。
+
+猜测：微信为了防止诱导分享，会监测分享url是否有utm_source，utm_campaign,utm_medium等渠道分析参数，监测
+
 ## 微信支付
 
 1. 支付安全目录，iOS 识别支付安全目录路径规则是进入 SPA 应用的第一个页面所对应的 URL
